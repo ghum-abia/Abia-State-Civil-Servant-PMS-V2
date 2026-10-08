@@ -1,14 +1,26 @@
-import React from 'react'
+import AppRoutes from './routes/AppRoutes';
+// import { registerSW } from 'virtual:pwa-register';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-// import ProtectedRoute from './components/protectedRoute/ProtectedRoute'
-import Dashboard from './pages/staff/Dashboard'
+// registerSW({ immediate: true });
 
-const App = () => {
+export default function App() {
   return (
-    <div>
-        <Dashboard />
-    </div>
-  )
+    <>
+      <ToastContainer 
+        position="top-right"  
+        autoClose={3000}  
+        hideProgressBar={false} 
+        newestOnTop={false} 
+        closeOnClick 
+        rtl={false} 
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
+      <AppRoutes />
+    </>
+  );
 }
-
-export default App

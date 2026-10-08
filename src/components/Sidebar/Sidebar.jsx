@@ -1,154 +1,77 @@
 import React from 'react';
-import {
-  LayoutDashboard,
-  LineChart,
-  CheckSquare,
-  PlusCircle,
-  FileText,
-  User,
-  Bell,
-  Settings,
-  LogOut,
-  Users,
-  Building2,
-  Activity, 
-  Target,   
-  BarChart2 
-} from 'lucide-react';
+import { NavLink, useLocation } from 'react-router-dom';
+import { useAuthStore } from '../../store/authStore.js';
+import { sidebarRoutes } from '../../routes/sidebarRoutes.js';
+import { LogOut, Settings as SettingsIcon } from 'lucide-react';
+import Logo from '../../../public/pms_logo.jpg'
 
-const Sidebar = ({ role = 'staff', activeTab, setActiveTab }) => {
+const Sidebar = () => {
+  const { logout, profile } = useAuthStore();
+  const location = useLocation();
+  const role = profile?.pms_role?.toLowerCase() || 'officer';
 
-  const getNavItems = () => {
-    switch (role) {
-      case 'staff':
-      case 'officer':
-        return [
-          { id: 'dashboard', label: 'Dashboard Overview', icon: LayoutDashboard },
-          { id: 'performance', label: 'My Performance', icon: LineChart },
-          { id: 'tasks', label: 'Tasks', icon: CheckSquare },
-          { id: 'log-task', label: 'Log Task', icon: PlusCircle },
-          { id: 'reports', label: 'Reports', icon: FileText },
-          { id: 'profile', label: 'My Profile', icon: User },
-          { id: 'notifications', label: 'Notifications', icon: Bell },
-        ];
+  // Filter routes matching the current user's role
+  const allowedRoutes = sidebarRoutes.filter(route => route.roles.includes(role));
 
-      case 'hod':
-      case 'director':
-      case 'acting-officer':
-        return [
-          { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
-          { id: 'my-staff', label: 'My Staff', icon: Users },
-          { id: 'tasks', label: 'Tasks', icon: CheckSquare },
-          { id: 'assign-task', label: 'Assign Task', icon: PlusCircle },
-          { id: 'team-performance', label: 'Team Performance', icon: LineChart },
-          { id: 'reports', label: 'Reports', icon: FileText },
-          { id: 'my-profile', label: 'My Profile', icon: User },
-          { id: 'notifications', label: 'Notifications', icon: Bell },
-        ];
-
-      case 'perm-sec':
-      case 'dic':
-        return [
-          { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
-          { id: 'mda-performance', label: 'MDA Performance', icon: Activity },
-          { id: 'departments', label: 'Departments', icon: Building2 },
-          { id: 'objectives', label: 'Objectives', icon: Target },
-          { id: 'kpis', label: 'KPIs', icon: BarChart2 },
-          { id: 'reports', label: 'Reports', icon: FileText },
-          { id: 'notifications', label: 'Notifications', icon: Bell },
-          { id: 'my-profile', label: 'My Profile', icon: User },
-        ];
-
-      default:
-        return [
-          { id: 'dashboard', label: 'Dashboard Overview', icon: LayoutDashboard },
-        ];
-    }
-  };
-
-  const navItems = getNavItems();
-
-  // Badges & styling configuration for each civil service rank
-  const roleConfig = {
-    staff: { label: 'Staff / Officer', color: 'bg-emerald-100 text-emerald-800' },
-    officer: { label: 'Staff / Officer', color: 'bg-emerald-100 text-emerald-800' },
+  const roleMeta = {
+    officer: { label: 'Officer', color: 'bg-emerald-100 text-emerald-800' },
     hod: { label: 'Head of Department', color: 'bg-blue-100 text-blue-800' },
-    director: { label: 'Director', color: 'bg-indigo-100 text-indigo-800' },
-    'perm-sec': { label: 'Permanent Secretary', color: 'bg-purple-100 text-purple-800' },
-    dic: { label: 'DIC', color: 'bg-amber-100 text-amber-800' },
-    'acting-officer': { label: 'Acting Officer', color: 'bg-teal-100 text-teal-800' },
+    hom: { label: 'Head of Ministry', color: 'bg-indigo-100 text-indigo-800' },
+    hos: { label: 'Head of Service', color: 'bg-purple-100 text-purple-800' },
   };
 
-  const currentRoleMeta = roleConfig[role] || { label: 'Civil Servant', color: 'bg-gray-100 text-gray-800' };
+  const currentRoleMeta = roleMeta[role] || { label: 'Civil Servant', color: 'bg-slate-100 text-slate-800' };
+
+{/* <div className={`text-xs font-semibold px-2.5 py-1 rounded-md text-center uppercase tracking-wider ${currentRoleMeta.color}`}>
+            {currentRoleMeta.label}
+          </div> */}
 
   return (
-    <aside className="w-64 bg-white border-r border-gray-200 flex flex-col justify-between h-screen sticky top-0 shadow-sm">
-      {/* Top Section */}
+    <aside className="w-64 bg-[#FFFFFF] text-slate-300 flex flex-col justify-between h-screen sticky top-0 border-r border-slate-800">
       <div>
         {/* App Logo & Rank Badge */}
-        <div className="p-5 border-b border-gray-100">
-          <div className="flex items-center gap-3 mb-3">
-            <div className="bg-emerald-700 text-white p-2 rounded-lg font-bold text-lg flex items-center justify-center w-10 h-10 shadow-sm">
-              CS
-            </div>
-            <div>
-              <h1 className="font-bold text-gray-900 text-xs tracking-wide uppercase">Abia State PMS</h1>
-              <p className="text-[11px] text-gray-400">Civil Service V2</p>
-            </div>
-          </div>
-
-          {/* Dynamic Role Badge */}
-          <div className={`text-xs font-semibold px-2.5 py-1 rounded-md text-center uppercase tracking-wider ${currentRoleMeta.color}`}>
-            {currentRoleMeta.label}
+        <div className="p-5 border-b border-slate-800">
+          <div className="flex items-center">
+           <img src={Logo} alt="PMS LOGO" className=''/>
           </div>
         </div>
 
-        {/* Navigation Links */}
+        {/* Dynamic Navigation Links */}
         <nav className="p-4 space-y-1.5 overflow-y-auto max-h-[calc(100vh-220px)]">
-          {navItems.map((item) => {
+          {allowedRoutes.map((item) => {
             const Icon = item.icon;
-            const isActive = activeTab === item.id;
+            const isActive = location.pathname === item.path;
 
             return (
-              <button
-                key={item.id}
-                onClick={() => setActiveTab(item.id)}
-                className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all ${isActive
-                  ? 'bg-emerald-800 text-white shadow-sm'
-                  : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
-                  }`}
+              <NavLink
+                key={item.path + item.title}
+                to={item.path}
+                className={`flex items-center gap-3 px-4 py-2.5 rounded-md text-sm font-medium transition-all ${
+                  isActive
+                    ? 'bg-[#114D40] text-white shadow-sm'
+                    : 'text-slate-400 hover:bg-[rgba(11,105,63,0.26)] hover:text-white'
+                }`}
               >
-                <Icon className={`w-5 h-5 ${isActive ? 'text-white' : 'text-gray-500'}`} />
-                <span className="text-left">{item.label}</span>
-              </button>
+                <Icon size={18} className={isActive ? 'text-white' : 'text-slate-600'} />
+                <span className={isActive ? 'text-white' : 'text-slate-600'}>{item.title}</span>
+              </NavLink>
             );
           })}
         </nav>
       </div>
 
-      {/* Bottom Section: Settings & Logout */}
-      <div className="p-4 border-t border-gray-100 space-y-1.5 bg-white">
+      {/* Bottom Logout Section */}
+      <div className="p-4 border-t border-slate-800/20 bg-white">
         <button
-          onClick={() => setActiveTab('settings')}
-          className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all ${activeTab === 'settings'
-            ? 'bg-emerald-800 text-white shadow-sm'
-            : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
-            }`}
+          onClick={logout}
+          className="w-full flex group items-center gap-3 px-4 py-2.5 rounded-md text-sm font-medium text-red-400 hover:bg-red-500/10 transition-all"
         >
-          <Settings className={`w-5 h-5 ${activeTab === 'settings' ? 'text-white' : 'text-gray-500'}`} />
-          <span>Settings</span>
-        </button>
-
-        <button
-          onClick={() => console.log('Logging out...')}
-          className="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-red-600 hover:bg-red-50 transition-all"
-        >
-          <LogOut className="w-5 h-5 text-red-500" />
+          <LogOut size={18} className="text-red-400 group-hover:rotate-12 duration-200 ease-in-out  " />
           <span>Logout</span>
         </button>
       </div>
     </aside>
   );
-}
+};
 
 export default Sidebar;
