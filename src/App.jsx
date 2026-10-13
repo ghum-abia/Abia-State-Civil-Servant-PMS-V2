@@ -5,7 +5,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 // registerSW({ immediate: true });
 
-export default function App() {
+const App =()=> {
   return (
     <>
       <ToastContainer 
@@ -24,3 +24,5 @@ export default function App() {
     </>
   );
 }
+
+export default App;

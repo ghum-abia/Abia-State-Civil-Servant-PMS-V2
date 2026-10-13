@@ -1,323 +1,263 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
+import { useOfficerDashboard } from '../../hooks/staff/useOfficerDashboard';
+import { useStaffTasks } from '../../hooks/staff/useStaffTasks';
+import { useStaffPerformance } from '../../hooks/staff/useStaffPerformance'
+import OfficerPerformanceTrend from '../../components/staff/OfficerPerformanceTrend';
+import Spinner from '../../components/UI/Spinner';
 import { 
   Calendar, 
-  CheckCircle2, 
+  Check, 
   AlertTriangle, 
   TrendingUp, 
-  FileText, 
-  Clock 
+  Loader2, 
+  AlertCircle 
 } from 'lucide-react';
 import { 
   ResponsiveContainer, 
-  LineChart, 
-  Line, 
-  XAxis, 
-  YAxis, 
-  Tooltip, 
-  CartesianGrid 
+  PieChart, 
+  Pie, 
+  Cell 
 } from 'recharts';
-import api from '../../services/api/api';
 
-const trendData = [
-  { month: 'Apr', score: 81 },
-  { month: 'May', score: 83 },
-  { month: 'Jun', score: 81 },
-  { month: 'Jul', score: 85 },
-  { month: 'Aug', score: 83 },
-  { month: 'Sep', score: 84 },
-];
-
-export default function StaffDashboard() {
-  const [dashboardData, setDashboardData] = useState(null);
-  const [tasks, setTasks] = useState([]);
-  const [loading, setLoading] = useState(true);
+const StaffDashboard = () => {
+  const { dashboardData, isLoading: isDashboardLoading, error: dashboardError, fetchDashboardData } = useOfficerDashboard();
+  const { tasks, fetchTasks } = useStaffTasks();
+  const { scorecard, isLoading, fetchMyScorecard } = useStaffPerformance();
 
   useEffect(() => {
-    const fetchDashboard = async () => {
-      try {
-        const [dashRes, tasksRes] = await Promise.all([
-          api.get('/dashboard/officer'), //[cite: 1]
-          api.get('/tasks') //[cite: 1]
-        ]);
-        setDashboardData(dashRes.data);
-        setTasks(tasksRes.data?.tasks || tasksRes.data || []);
-      } catch (err) {
-        console.error('Error loading dashboard:', err);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchDashboard();
-  }, []);
+    fetchMyScorecard();
+    fetchDashboardData();
+    fetchTasks({ limit: 5 });
+  }, [fetchDashboardData, fetchTasks]);
 
-  const getStatusBadge = (status) => {
-    switch (status?.toLowerCase()) {
-      case 'approved':
-        return <span className="bg-emerald-50 text-emerald-700 border border-emerald-200 px-2.5 py-0.5 rounded-md text-[11px] font-semibold">Approved</span>;
-      case 'submitted':
-        return <span className="bg-sky-50 text-sky-700 border border-sky-200 px-2.5 py-0.5 rounded-md text-[11px] font-semibold">Submitted</span>;
-      case 'overdue':
-        return <span className="bg-rose-50 text-rose-700 border border-rose-200 px-2.5 py-0.5 rounded-md text-[11px] font-semibold">Overdue</span>;
-      case 'in progress':
-        return <span className="bg-indigo-50 text-indigo-700 border border-indigo-200 px-2.5 py-0.5 rounded-md text-[11px] font-semibold">In Progress</span>;
-      case 'returned':
-        return <span className="bg-amber-50 text-amber-700 border border-amber-200 px-2.5 py-0.5 rounded-md text-[11px] font-semibold">Returned</span>;
-      default:
-        return <span className="bg-slate-100 text-slate-700 border border-slate-200 px-2.5 py-0.5 rounded-md text-[11px] font-semibold">{status}</span>;
-    }
-  };
+  if (isDashboardLoading) return <Spinner />
+  
+  
+  // Live Dashboard Data from GET /api/v1/dashboard/officer
+  const {
+    officer_name = 'Officer',
+    active_tasks = 0,
+    completed_tasks = 0,
+    overdue_tasks = 0,
+    kpi_performance_score = 0,
+    recent_activities = [],
+  } = dashboardData || {};
+
+  // Donut Chart Data
+  const donutData = [
+    { name: 'Completed', value: kpi_performance_score || 84 },
+    { name: 'Remaining', value: 100 - (kpi_performance_score || 84) },
+  ];
+  const DONUT_COLORS = ['#0B5C35', '#E2E8F0'];
+
+
 
   return (
-    <div className="max-w-7xl mx-auto space-y-6">
-      
-      {/* Header Greeting */}
+    <div className="max-w-7xl mx-auto space-y-6 font-sans pb-12 text-slate-800">
+      {/* Header */}
       <div>
-        <h2 className="text-xl font-bold text-slate-900">Good morning, John</h2>
+        <h2 className="text-xl font-bold text-slate-900">Good morning, {officer_name}</h2>
         <p className="text-xs text-slate-500 mt-0.5">Here is your current performance and task overview.</p>
       </div>
 
-      {/* Top 4 Metrics Cards */}
+      {dashboardError && (
+        <div className="flex items-center gap-2 p-4 bg-rose-50 border border-rose-200 text-rose-700 text-xs rounded-md">
+          <AlertCircle size={18} className="shrink-0" />
+          <span>{dashboardError}</span>
+        </div>
+      )}
+
+      {/* Top 4 Metric Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        
-        {/* Card 1 */}
-        <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex justify-between items-start">
+        <div className="bg-white p-5 rounded-md border border-slate-100 shadow-sm flex justify-between items-start">
           <div>
-            <p className="text-[11px] font-semibold text-slate-500 uppercase tracking-wide">Tasks Due</p>
-            <h3 className="text-3xl font-extrabold text-slate-900 mt-2">03</h3>
+            <p className="text-[11px] font-bold text-slate-400">Tasks Due</p>
+            <h3 className="text-3xl font-sans text-slate-900 font-semibold mt-2">{String(active_tasks)}</h3>
             <p className="text-[11px] text-slate-400 mt-1">Active assignments</p>
           </div>
-          <div className="p-2.5 bg-slate-50 rounded-lg text-slate-600 border border-slate-100">
-            <Calendar size={18} />
-          </div>
+          <div className="p-2 bg-slate-50 rounded-md text-slate-400 border border-slate-100"><Calendar size={18} /></div>
         </div>
 
-        {/* Card 2 */}
-        <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex justify-between items-start">
+        <div className="bg-white p-5 rounded-md border border-slate-100 shadow-sm flex justify-between items-start">
           <div>
-            <p className="text-[11px] font-semibold text-slate-500 uppercase tracking-wide">Completed Tasks</p>
-            <h3 className="text-3xl font-extrabold text-slate-900 mt-2">2</h3>
+            <p className="text-[11px] font-bold text-slate-400">Completed Tasks</p>
+            <h3 className="text-3xl font-sans font-semibold text-emerald-800 mt-2">{completed_tasks}</h3>
             <p className="text-[11px] text-slate-400 mt-1">This period</p>
           </div>
-          <div className="p-2.5 bg-slate-50 rounded-lg text-emerald-600 border border-slate-100">
-            <CheckCircle2 size={18} />
-          </div>
+          <div className="p-2 bg-slate-50 rounded-md text-slate-400 border border-slate-100"><Check size={18} /></div>
         </div>
 
-        {/* Card 3 */}
-        <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex justify-between items-start">
+        <div className="bg-white p-5 rounded-md border border-slate-100 shadow-sm flex justify-between items-start">
           <div>
-            <p className="text-[11px] font-semibold text-slate-500 uppercase tracking-wide">Overdue Tasks</p>
-            <h3 className="text-3xl font-extrabold text-rose-600 mt-2">01</h3>
-            <p className="text-[11px] text-slate-400 mt-1">Needs immediate attention</p>
+            <p className="text-[11px] font-semibold text-slate-400">Overdue Tasks</p>
+            <h3 className="text-3xl font-sans font-semibold text-rose-600 mt-2">{String(overdue_tasks)}</h3>
+            <p className="text-[11px] text-slate-400 mt-1">Needs attention</p>
           </div>
-          <div className="p-2.5 bg-slate-50 rounded-lg text-rose-500 border border-slate-100">
-            <AlertTriangle size={18} />
-          </div>
+          <div className="p-2 bg-slate-50 rounded-md text-slate-400 border border-slate-100"><AlertTriangle size={18} /></div>
         </div>
 
-        {/* Card 4 */}
-        <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex justify-between items-start">
+        <div className="bg-white p-5 rounded-md border border-slate-100 shadow-sm flex justify-between items-start">
           <div>
-            <p className="text-[11px] font-semibold text-slate-500 uppercase tracking-wide">Current Performance</p>
-            <h3 className="text-3xl font-extrabold text-emerald-600 mt-2">84%</h3>
-            <p className="text-[11px] text-emerald-600 font-medium mt-1">Very Good</p>
+            <p className="text-[11px] font-semibold text-slate-400">Current Performance</p>
+            <h3 className="text-3xl font-sans font-semibold text-emerald-700 mt-2">{kpi_performance_score}%</h3>
+            <p className={`text-[11px] text-slate-400 mt-1 ${kpi_performance_score >= 60 ? 'text-emerald-600' : 'text-rose-600'}`}>
+              {kpi_performance_score >= 70 ? 'Excellent performance' : kpi_performance_score > 39 && kpi_performance_score <= 69 ? 'Good performance': 'Needs improvement'}
+            </p>
           </div>
-          <div className="p-2.5 bg-slate-50 rounded-lg text-emerald-600 border border-slate-100">
-            <TrendingUp size={18} />
-          </div>
+          <div className="p-2 bg-slate-50 rounded-md text-slate-400 border border-slate-100"><TrendingUp size={18} /></div>
         </div>
-
       </div>
 
-      {/* Middle Section: Performance Overview & Trend Chart */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        
-        {/* Left: Overall Performance Breakdown */}
-        <div className="lg:col-span-5 bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between">
-          <h3 className="text-xs font-bold uppercase tracking-wider text-slate-900 mb-4">Performance Overview</h3>
-          
-          <div className="flex flex-col items-center justify-center py-4">
-            <div className="relative w-32 h-32 rounded-full border-[10px] border-slate-100 border-t-emerald-600 flex flex-col items-center justify-center">
-              <span className="text-3xl font-extrabold text-slate-900">86%</span>
-            </div>
-            <p className="text-xs font-bold text-slate-900 mt-3">Overall Performance</p>
-            <p className="text-[11px] text-emerald-600 font-semibold mt-0.5">Very Good</p>
-          </div>
+      {/* Analytics Row */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+        {/* Performance Overview Donut */}
+        <div className="bg-white p-6 flex flex-col rounded-md border border-slate-100 shadow-sm space-y-4">
+          <h3 className="text-sm font-bold font-sans text-slate-900">Performance Overview</h3>
 
-          <div className="grid grid-cols-2 gap-3 mt-4 pt-4 border-t border-slate-100 text-center">
-            <div className="bg-slate-50 p-3 rounded-lg border border-slate-100">
-              <p className="text-base font-bold text-slate-900">86%</p>
-              <p className="text-[10px] text-slate-500 font-medium mt-0.5">KPI Achievement</p>
+          <div className="relative flex flex-col items-center justify-center py-2">
+            <div className="w-36 h-36 flex relative items-center justify-center">
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie
+                    data={donutData}
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={45}
+                    outerRadius={60}
+                    startAngle={90}
+                    endAngle={-270}
+                    dataKey="value"
+                  >
+                    {donutData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={DONUT_COLORS[index % DONUT_COLORS.length]} />
+                    ))}
+                  </Pie>
+                </PieChart>
+              </ResponsiveContainer>
             </div>
-            <div className="bg-slate-50 p-3 rounded-lg border border-slate-100">
-              <p className="text-base font-bold text-slate-900">84%</p>
-              <p className="text-[10px] text-slate-500 font-medium mt-0.5">Task Performance</p>
+            <div className=" text-center absolute top-16">
+              <span className="text-xl text-center font-bold text-slate-900">{kpi_performance_score}%</span>
             </div>
-            <div className="bg-slate-50 p-3 rounded-lg border border-slate-100">
-              <p className="text-base font-bold text-slate-900">91%</p>
-              <p className="text-[10px] text-slate-500 font-medium mt-0.5">Completion Rate</p>
-            </div>
-            <div className="bg-slate-50 p-3 rounded-lg border border-slate-100">
-              <p className="text-base font-bold text-slate-900">82%</p>
-              <p className="text-[10px] text-slate-500 font-medium mt-0.5">Task Quality</p>
-            </div>
-          </div>
-        </div>
 
-        {/* Right: Performance Trend Line Chart */}
-        <div className="lg:col-span-7 bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between">
-          <div className="flex justify-between items-center mb-4">
-            <h3 className="text-xs font-bold uppercase tracking-wider text-slate-900">Performance Trend</h3>
-            <span className="text-[11px] text-slate-400 font-medium">Last 6 months</span>
-          </div>
+            <div className="mt-2 text-center">
+              <p className="text-sm font-bold text-slate-800">Overall Performance</p>
+              <span className="inline-block bg-sky-100/70 text-sky-800 text-[12px] font-bold px-2 py-0.5 rounded-full mt-1">
+                {kpi_performance_score >= 70 ? 'Excellent' : kpi_performance_score > 39 && kpi_performance_score <= 69 ? 'Good': 'Needs Improvement'}
+              </span>
 
-          <div className="h-48 w-full">
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={trendData}>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
-                <XAxis dataKey="month" tickLine={false} axisLine={false} tick={{ fill: '#64748b', fontSize: 11 }} />
-                <YAxis domain={[60, 100]} tickLine={false} axisLine={false} tick={{ fill: '#64748b', fontSize: 11 }} />
-                <Tooltip />
-                <Line type="monotone" dataKey="score" stroke="#0B5C35" strokeWidth={2.5} dot={{ fill: '#0B5C35', r: 4 }} activeDot={{ r: 6 }} />
-              </LineChart>
-            </ResponsiveContainer>
-          </div>
 
-          <div className="grid grid-cols-3 gap-4 pt-4 border-t border-slate-100 text-[11px]">
-            <div>
-              <div className="flex justify-between font-semibold mb-1">
-                <span className="text-slate-600">Task Completion Rate</span>
-                <span className="text-emerald-600">On Track</span>
+          {/* Cards */}
+              <div className="box grid grid-cols-2 gap-4 mt-3">
+                <span className="inline-block  border text-[10px] font-bold px-1 space-y-1 py-2 border-slate-300/20 shadow-sm mt-1">
+                    <span className="score  text-[#146C43] text-[16px]">{scorecard?.total_rated_tasks || 0}</span>
+                    <p className="text-[10px] text-slate  text-slate-400 font-semibold mt-0.5">Rated Tasks</p>
+                </span>
+                <span className="inline-block  border text-[10px] font-bold px-1 space-y-1 py-2 border-slate-300/20 shadow-sm mt-1">
+                    <span className="score text-[#146C43] text-[16px]">{scorecard?.overall_performance || 0}%</span>
+                    <p className="text-[10px] text-slate-400 font-semibold mt-0.5">Task Performance</p>
+                </span>
+                <span className="inline-block  border text-[10px] font-bold px-1 space-y-1 py-2 border-slate-300/20 shadow-sm mt-1">
+                    <span className="score  text-[#146C43] text-[16px]">{scorecard?.average_efficiency || 0}%</span>
+                    <p className="text-[10px] text-slate-400 font-semibold mt-0.5">Average Task Efficiency</p>
+                </span>
+                <span className="inline-block  border text-[10px] font-bold px-1 space-y-1 py-2 border-slate-300/20 shadow-sm mt-1">
+                    <span className="score  text-[#146C43] text-[16px]">{scorecard?.average_quality || 0}%</span>
+                    <p className="text-[10px] text-slate-400 font-semibold mt-0.5">Average Task Quality</p>
+                </span>
+                
               </div>
-              <div className="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
-                <div className="bg-emerald-600 h-full w-[96%]"></div>
-              </div>
-              <span className="text-[10px] font-bold text-slate-900 mt-1 block">96%</span>
-            </div>
-            <div>
-              <div className="flex justify-between font-semibold mb-1">
-                <span className="text-slate-600">Report Accuracy</span>
-                <span className="text-emerald-600">On Track</span>
-              </div>
-              <div className="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
-                <div className="bg-emerald-600 h-full w-[98%]"></div>
-              </div>
-              <span className="text-[10px] font-bold text-slate-900 mt-1 block">98%</span>
-            </div>
-            <div>
-              <div className="flex justify-between font-semibold mb-1">
-                <span className="text-slate-600">Timeliness</span>
-                <span className="text-amber-600">At Risk</span>
-              </div>
-              <div className="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
-                <div className="bg-amber-500 h-full w-[94%]"></div>
-              </div>
-              <span className="text-[10px] font-bold text-slate-900 mt-1 block">94%</span>
             </div>
           </div>
         </div>
 
+        {/* Recharts Trend Component */}
+        <div className="lg:col-span-2">
+          <OfficerPerformanceTrend />
+        </div>
       </div>
 
-      {/* My Tasks Table Section */}
-      <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
-        <div className="flex justify-between items-center p-6 border-b border-slate-100">
-          <h3 className="text-xs font-bold uppercase tracking-wider text-slate-900">My Tasks</h3>
-          <button className="text-xs font-semibold text-[#0B5C35] hover:underline">View all</button>
+      {/* My Tasks Table (Last 5 Tasks from useStaffTasks) */}
+      <div className="bg-white rounded-md border border-slate-100 shadow-sm overflow-hidden p-6 space-y-4">
+        <div className="flex items-center justify-between">
+          <h3 className="text-sm font-bold text-slate-900">My Tasks</h3>
+          <span className="text-xs text-slate-400">Showing recent tasks</span>
         </div>
 
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
-            <thead className="bg-slate-50 text-[10px] uppercase tracking-wider text-slate-500 border-b border-slate-200">
-              <tr>
-                <th className="py-3 px-6">Task</th>
-                <th className="py-3 px-6">Assigned By</th>
-                <th className="py-3 px-6">Due Date</th>
-                <th className="py-3 px-6">Status</th>
-                <th className="py-3 px-6">Performance</th>
-                <th className="py-3 px-6 text-right">Action</th>
+            <thead className="bg-slate-50/70 text-[10px] font-semibold text-slate-400 border-b border-slate-100">
+              <tr className="uppercase">
+                <th className="py-3 px-4 font-normal">Task Title</th>
+                <th className="py-3 px-4 font-normal">Due Date</th>
+                <th className="py-3 px-4 font-normal">Status</th>
+                <th className="py-3 px-4 font-normal">Weight</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100">
-              {tasks.length > 0 ? (
-                tasks.map((task, i) => (
-                  <tr key={task.id || i} className="hover:bg-slate-50/60 transition-colors">
-                    <td className="py-4 px-6">
-                      <p className="font-bold text-slate-900">{task.title || task.name}</p>
-                      <p className="text-[11px] text-slate-400">{task.department || 'Administration'}</p>
-                    </td>
-                    <td className="py-4 px-6 text-slate-600 font-medium">{task.assigned_by || 'Samuel Ojiemen'}</td>
-                    <td className="py-4 px-6 text-slate-600">{task.due_date || '07 Sept 2026'}</td>
-                    <td className="py-4 px-6">{getStatusBadge(task.status || 'Approved')}</td>
-                    <td className="py-4 px-6 font-bold text-slate-900">{task.performance || '83%'}</td>
-                    <td className="py-4 px-6 text-right">
-                      <button className="text-xs font-semibold text-[#0B5C35] hover:bg-emerald-50 px-3 py-1 rounded-md border border-emerald-600/30 transition-colors">
-                        View
-                      </button>
-                    </td>
-                  </tr>
-                ))
-              ) : (
-                <>
-                  <tr className="hover:bg-slate-50/60 transition-colors">
-                    <td className="py-4 px-6"><p className="font-bold text-slate-900">September Monthly Report</p><p className="text-[11px] text-slate-400">Administration</p></td>
-                    <td className="py-4 px-6 text-slate-600 font-medium">Samuel Ojiemen</td>
-                    <td className="py-4 px-6 text-slate-600">07 Sept 2026</td>
-                    <td className="py-4 px-6">{getStatusBadge('Approved')}</td>
-                    <td className="py-4 px-6 font-bold text-slate-900">83%</td>
-                    <td className="py-4 px-6 text-right"><button className="text-xs font-semibold text-[#0B5C35] hover:bg-emerald-50 px-3 py-1 rounded-md border border-emerald-600/30 transition-colors">View</button></td>
-                  </tr>
-                  <tr className="hover:bg-slate-50/60 transition-colors">
-                    <td className="py-4 px-6"><p className="font-bold text-slate-900">Payroll Review</p><p className="text-[11px] text-slate-400">Administration</p></td>
-                    <td className="py-4 px-6 text-slate-600 font-medium">Samuel Ojiemen</td>
-                    <td className="py-4 px-6 text-slate-600">10 Sept 2026</td>
-                    <td className="py-4 px-6">{getStatusBadge('Submitted')}</td>
-                    <td className="py-4 px-6 font-bold text-slate-400">Pending</td>
-                    <td className="py-4 px-6 text-right"><button className="text-xs font-semibold text-[#0B5C35] hover:bg-emerald-50 px-3 py-1 rounded-md border border-emerald-600/30 transition-colors">View</button></td>
-                  </tr>
-                  <tr className="hover:bg-slate-50/60 transition-colors">
-                    <td className="py-4 px-6"><p className="font-bold text-slate-900">Data Analysis</p><p className="text-[11px] text-slate-400">Administration</p></td>
-                    <td className="py-4 px-6 text-slate-600 font-medium">Samuel Ojiemen</td>
-                    <td className="py-4 px-6 text-slate-600">05 Sept 2026</td>
-                    <td className="py-4 px-6">{getStatusBadge('Overdue')}</td>
-                    <td className="py-4 px-6 font-bold text-slate-400">—</td>
-                    <td className="py-4 px-6 text-right"><button className="text-xs font-semibold text-[#0B5C35] hover:bg-emerald-50 px-3 py-1 rounded-md border border-emerald-600/30 transition-colors">View</button></td>
-                  </tr>
-                </>
-              )}
-            </tbody>
+            <tbody className="divide-y divide-slate-100 font-medium">
+  {tasks.slice(0, 5).map((task) => (
+    <tr key={task.id} className="hover:bg-slate-50/50 transition-colors">
+      <td className="py-3.5 px-4 font-bold text-slate-800">{task.title}</td>
+      <td className="py-3.5 px-4 text-slate-500">
+        {task.due_date ? new Date(task.due_date).toLocaleDateString() : 'N/A'}
+      </td>
+      <td className="py-3.5 px-4">
+        <span
+          className={`inline-block px-3 py-1 text-[11px] font-bold rounded-full ${
+            task.status === 'RATED'
+              ? 'text-emerald-700 bg-emerald-100/70 border border-emerald-200'
+              : task.status === 'SUBMITTED'
+              ? 'text-blue-700 bg-blue-100/70 border border-blue-200'
+              : task.status === 'NEEDS_CORRECTION'
+              ? 'text-amber-700 bg-amber-100/70 border border-amber-200'
+              : 'text-slate-600 bg-slate-100'
+          }`}
+        >
+          {task.status === 'RATED' ? 'APPROVED' : task.status}
+        </span>
+      </td>
+      <td className="py-3.5 px-4 text-slate-600 font-semibold">{task.weight}%</td>
+    </tr>
+  ))}
+  {tasks.length === 0 && (
+    <tr>
+      <td colSpan={5} className="text-center py-6 text-slate-400">No tasks found.</td>
+    </tr>
+  )}
+</tbody>
           </table>
         </div>
       </div>
 
-      {/* Recent Activity Section */}
-      <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
-        <h3 className="text-xs font-bold uppercase tracking-wider text-slate-900 mb-4">Recent Activity</h3>
-        <div className="space-y-4">
-          <div className="flex items-start gap-3 pb-4 border-b border-slate-100 last:border-0 last:pb-0">
-            <div className="w-7 h-7 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0 border border-emerald-200">
-              <CheckCircle2 size={14} />
-            </div>
-            <div>
-              <p className="text-xs font-bold text-slate-900">Task approved</p>
-              <p className="text-[11px] text-slate-500">September Report was approved by Samuel Ojiemen.</p>
-              <span className="text-[10px] text-slate-400 mt-0.5 block">07 Sept 2026, 14:32</span>
-            </div>
-          </div>
+      {/* Recent Activity Timeline from dashboardData */}
+      <div className="bg-white rounded-md border border-slate-100 shadow-sm p-6 space-y-4">
+        <h3 className="text-sm font-bold text-slate-900">Recent Activity</h3>
 
-          <div className="flex items-start gap-3 pb-4 border-b border-slate-100 last:border-0 last:pb-0">
-            <div className="w-7 h-7 rounded-full bg-amber-50 text-amber-600 flex items-center justify-center shrink-0 border border-amber-200">
-              <Clock size={14} />
-            </div>
-            <div>
-              <p className="text-xs font-bold text-slate-900">Correction requested</p>
-              <p className="text-[11px] text-slate-500">Attendance schedule needs to be attached to Quarterly Meeting Minutes.</p>
-              <span className="text-[10px] text-slate-400 mt-0.5 block">05 Sept 2026, 11:15</span>
-            </div>
-          </div>
+        <div className="space-y-4">
+          {recent_activities && recent_activities.length > 0 ? (
+            recent_activities.map((activity, idx) => (
+              <div key={idx} className="flex items-start gap-3">
+                <div className="w-6 h-6 rounded-full bg-emerald-600 text-white flex items-center justify-center shrink-0 mt-0.5 text-xs">
+                  ✓
+                </div>
+                <div>
+                  <p className="text-xs font-bold text-slate-800">{activity.title || 'Activity Update'}</p>
+                  <p className={`text-[11px] ${activity.status === 'RATED' ? 'text-emerald-600' : 'text-slate-400'} mt-0.5`}>
+                    Status: {activity.status === 'RATED' ? 'APPROVED' : activity.status || 'N/A'}
+                  </p>
+                  {console.log('activity.status', activity.status)}
+                  <span className="text-[10px] text-slate-300 block mt-0.5">
+                    {activity.timestamp ? new Date(activity.timestamp).toLocaleString() : 'Recently'}
+                  </span>
+                </div>
+              </div>
+            ))
+          ) : (
+            <p className="text-xs text-slate-400">No recent activities recorded.</p>
+          )}
         </div>
       </div>
-
     </div>
   );
 }
+
+export default StaffDashboard;

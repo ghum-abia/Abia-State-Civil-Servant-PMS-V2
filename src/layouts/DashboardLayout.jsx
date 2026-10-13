@@ -1,16 +1,21 @@
-import React from 'react';
-import { Outlet, useLocation } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { Bell } from 'lucide-react';
 import { useAuthStore } from '../store/authStore';
 import Sidebar from '../components/Sidebar/Sidebar';
 import { sidebarRoutes } from '../routes/sidebarRoutes';
 
 const DashboardLayout = () => {
-  const { user } = useAuthStore();
+  const { isAuthenticated, profile } = useAuthStore();
   const location = useLocation();
+  const navigate = useNavigate();
   const { pathname } = location;
 
-  const userRole = user?.role?.toLowerCase() || 'staff';
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate('/login', { replace: true });
+    }
+  }, [isAuthenticated, navigate]);
 
   const getHeaderTitle = () => {
     const currentRoute = sidebarRoutes.find(route => route.path === pathname);
@@ -23,8 +28,8 @@ const DashboardLayout = () => {
   return (
     <div className="min-h-screen relative bg-[#F8FAFC] font-sans flex text-slate-800 overflow-x-hidden">
       <Sidebar />
-      <div className="flex-1 lg:pl-64 flex flex-col h-screen min-w-0 overflow-hidden">
-        <header className="sticky top-0 z-50 h-20 bg-white border-b border-slate-100 px-4 md:px-8 flex items-center justify-between">
+      <div className="flex-1 flex flex-col h-screen min-w-0 overflow-hidden">
+        <header className="sticky w-full top-0 z-50 h-20 bg-white border-b border-slate-200 px-4 md:px-8 flex items-center justify-between">
           <h2 className="text-lg md:text-xl font-bold text-slate-800 pl-12 lg:pl-0">
             {getHeaderTitle()}
           </h2>

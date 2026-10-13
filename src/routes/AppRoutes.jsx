@@ -6,13 +6,29 @@ import DashboardLayout from '../layouts/DashboardLayout';
 import OverviewDashboard from '../pages/overviewDashboard';
 import RoleGuard from './RoleGuard';
 
+// Staff / Officer Pages
+import OfficerTasks from '../pages/staff/Tasks';
+import OfficerProfile from '../pages/staff/Profile';
+import OfficerNotification from '../pages/staff/Notification';
+import OfficerPerformance from '../pages/staff/Performance';
+import OfficerReports from '../pages/staff/Reports';
+import OfficerSettings from '../pages/staff/Settings';
+
+// HOD Pages
+import HODStaffs from '../pages/hod/MyStaffs';
+import HODTasks from '../pages/hod/Tasks';
+import HODAssign from '../pages/hod/Assign';
+import HODPerformance from '../pages/hod/Performance';
+import HODReports from '../pages/hod/Reports';
+import HODProfile from '../pages/hod/Profile';
+import HODNotification from '../pages/hod/Notification';
 
 const AppRoutes = () => {
   return (
     <BrowserRouter>
       <Routes>
         {/* Public Routes */}
-        <Route path="/" element={<HomePage />} /> {/* <-- Root Home Route */}
+        <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/unauthorized" element={<Unauthorized />} />
 
@@ -20,32 +36,33 @@ const AppRoutes = () => {
         <Route element={<DashboardLayout />}>
           <Route path="/dashboard" element={<OverviewDashboard />} />
 
-          {/* Officer Routes */}
-          <Route element={<RoleGuard allowedRoles={['officer']} />}>
-            <Route path="/task" element={<div className="p-6">Tasks</div>} />
-            <Route path="/records" element={<div className="p-6">My Records Page</div>} />
-            <Route path="/weekly-summary" element={<div className="p-6">Weekly Summary Page</div>} />
-            <Route path="/drafts" element={<div className="p-6">Drafts Page</div>} />
-            <Route path="/scores" element={<div className="p-6">My Scorecards Page</div>} />
-            <Route path="/settings" element={<div className="p-6">Officer Settings Page</div>} />
+          {/* Officer / Staff Routes */}
+          <Route element={<RoleGuard allowedRoles={['STAFF']} />}>
+            <Route path="/tasks" element={<OfficerTasks />} />
+            <Route path="/reports" element={<OfficerReports />} />
+            <Route path="/performance" element={<OfficerPerformance />} />
+            <Route path="/profile" element={<OfficerSettings />} />
           </Route>
 
           {/* HOD Routes */}
-          <Route element={<RoleGuard allowedRoles={['hod']} />}>
-            <Route path="/hod-supervisors" element={<div className="p-6">HOD Supervisors Page</div>} />
-            <Route path="/analytics" element={<div className="p-6">Departmental Metrics Page</div>} />
-            <Route path="/hod-reports" element={<div className="p-6">HOD Reports Page</div>} />
-            <Route path="/hod-settings" element={<div className="p-6">HOD Settings Page</div>} />
+          <Route element={<RoleGuard allowedRoles={['HOD']} />}>
+            <Route path="/mystaffs" element={<HODStaffs />} />
+            <Route path="/assigntasks" element={<HODAssign />} />
+            <Route path="/hodtasks" element={<HODTasks />} />
+            <Route path="/hodperformance" element={<HODPerformance />} />
+            <Route path="/hodreports" element={<HODReports />} />
+            <Route path="/hodprofile" element={<HODProfile />} />
+            <Route path="/hodnotification" element={<HODNotification />} />
           </Route>
 
           {/* HOM Routes */}
-          <Route element={<RoleGuard allowedRoles={['hom']} />}>
+          <Route element={<RoleGuard allowedRoles={['HOM']} />}>
             <Route path="/team-performance" element={<div className="p-6">Team Performance Page</div>} />
             <Route path="/reports" element={<div className="p-6">HOM Reports Page</div>} />
           </Route>
 
           {/* HOS Routes */}
-          <Route element={<RoleGuard allowedRoles={['hos']} />}>
+          <Route element={<RoleGuard allowedRoles={['HOS']} />}>
             <Route path="/department-heads" element={<div className="p-6">Department Heads Table</div>} />
             <Route path="/departments" element={<div className="p-6">Departments Management</div>} />
             <Route path="/statewide-audit" element={<div className="p-6">Statewide Audit Overview</div>} />
