@@ -5,6 +5,7 @@ import HodPerformanceTrend from '../../components/hod/HodPerformanceTrend';
 import HodPieChart from '../../components/hod/HodPieChart';
 import HodBarChart from '../../components/hod/HodBarChart';
 import { Loader2, AlertCircle } from 'lucide-react';
+import Spinner from '../../components/UI/Spinner';
 
 export default function PerformancePage() {
   const { hodData, isLoading, error, fetchHodDashboard } = useHodDashboard();
@@ -13,14 +14,7 @@ export default function PerformancePage() {
     fetchHodDashboard();
   }, [fetchHodDashboard]);
 
-  if (isLoading) {
-    return (
-      <div className="flex flex-col items-center justify-center h-96 bg-white rounded-2xl border border-slate-200">
-        <Loader2 size={32} className="animate-spin text-[#0B5C35] mb-2" />
-        <p className="text-xs text-slate-500 font-medium">Loading performance analytics...</p>
-      </div>
-    );
-  }
+  if (isLoading) return <Spinner />
 
   const {
     team_performance_average = 84,
@@ -55,25 +49,25 @@ export default function PerformancePage() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm">
           <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Team Performance</p>
-          <h3 className="text-3xl font-black text-[#0B5C35] mt-1">{team_performance_average}%</h3>
+          <h3 className="text-3xl font-semibold text-[#0B5C35] mt-1">{team_performance_average}%</h3>
           <p className="text-[11px] text-slate-400 mt-0.5">Administration Dept.</p>
         </div>
 
         <div className="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm">
           <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Average Quality</p>
-          <h3 className="text-3xl font-black text-blue-600 mt-1">82%</h3>
+          <h3 className="text-3xl font-semibold text-blue-600 mt-1">82%</h3>
           <p className="text-[11px] text-slate-400 mt-0.5">Task quality score</p>
         </div>
 
         <div className="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm">
           <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Average Efficiency</p>
-          <h3 className="text-3xl font-black text-[#0B5C35] mt-1">87%</h3>
+          <h3 className="text-3xl font-semibold text-[#0B5C35] mt-1">87%</h3>
           <p className="text-[11px] text-slate-400 mt-0.5">Submission & timeline</p>
         </div>
 
         <div className="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm">
           <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">KPI Achievement</p>
-          <h3 className="text-3xl font-black text-[#0B5C35] mt-1">86%</h3>
+          <h3 className="text-3xl font-semibold text-[#0B5C35] mt-1">86%</h3>
           <p className="text-[11px] text-slate-400 mt-0.5">Target: 90%</p>
         </div>
       </div>
@@ -117,7 +111,7 @@ export default function PerformancePage() {
                 />
               </div>
 
-              <span className="w-10 text-right font-black text-slate-800">{staff.average_performance}%</span>
+              <span className="w-10 text-right font-semibold text-slate-800">{staff.average_performance}%</span>
 
               <span
                 className={`px-3 py-1 rounded-md text-[10px] font-bold shrink-0 ${

@@ -3,11 +3,8 @@ import React, { useEffect } from 'react';
 import { useHodDashboard } from '../../hooks/hod/useHodDashboard';
 import { useStaffTasks } from '../../hooks/staff/useStaffTasks';
 import HodPerformanceTrend from '../../components/hod/HodPerformanceTrend';
+import Spinner from '../../components/UI/Spinner';
 import { 
-  Users, 
-  CheckCircle2, 
-  Clock, 
-  AlertTriangle, 
   Loader2, 
   AlertCircle,
   ChevronRight
@@ -23,16 +20,8 @@ const HodDashboard = () => {
     fetchTasks({ limit: 5 });
   }, [fetchHodDashboard, fetchTasks]);
 
-  if (isLoading) {
-    return (
-      <div className="flex flex-col items-center justify-center h-96 bg-white rounded-2xl border border-slate-200">
-        <Loader2 size={32} className="animate-spin text-[#0B5C35] mb-2" />
-        <p className="text-xs text-slate-500 font-medium">Loading departmental overview...</p>
-      </div>
-    );
-  }
-
-  // Extract backend payload from GET /api/v1/dashboard/hod
+  if (isLoading) return <Spinner />
+  
   const {
     hod_name = 'Director',
     team_performance_average = 0,
