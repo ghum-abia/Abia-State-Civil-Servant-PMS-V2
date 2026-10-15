@@ -1,4 +1,4 @@
-// src/pages/hod/HodDashboard.jsx
+// src/pages/hod/Dashboard.jsx
 import React, { useEffect } from 'react';
 import { useHodDashboard } from '../../hooks/hod/useHodDashboard';
 import { useStaffTasks } from '../../hooks/staff/useStaffTasks';
@@ -12,6 +12,7 @@ import {
   AlertCircle,
   ChevronRight
 } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const HodDashboard = () => {
   const { hodData, isLoading, error, fetchHodDashboard } = useHodDashboard();
@@ -44,6 +45,7 @@ const HodDashboard = () => {
       awaiting_review_count: 0,
       returned_for_correction_count: 0,
     },
+    six_month_trend = [],
   } = hodData || {};
 
   return (
@@ -135,7 +137,7 @@ const HodDashboard = () => {
 
         {/* Recharts Area Chart Trend Component */}
         <div className="lg:col-span-2">
-          <HodPerformanceTrend averageScore={team_performance_average} />
+          <HodPerformanceTrend trendData={six_month_trend} />
         </div>
       </div>
 
@@ -164,8 +166,8 @@ const HodDashboard = () => {
       <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden p-6 space-y-4">
         <div className="flex items-center justify-between">
           <h3 className="text-xs font-bold text-slate-800 uppercase tracking-wider">Recent Submissions</h3>
-          <button className="text-xs text-[#0B5C35] font-bold hover:underline flex items-center gap-0.5">
-            View all tasks <ChevronRight size={14} />
+          <button className="text-xs group text-[#0B5C35] font-bold hover:underline flex items-center gap-0.5">
+             <Link to="/hodtasks" className='flex items-center gap-0.5'>View all tasks <ChevronRight className='group-hover:translate-x-1 ease-in-out duration-500' size={14} /></Link>
           </button>
         </div>
 
@@ -177,7 +179,6 @@ const HodDashboard = () => {
                 <th className="py-3 px-4 font-bold">Officer</th>
                 <th className="py-3 px-4 font-bold">Submitted</th>
                 <th className="py-3 px-4 font-bold">Status</th>
-                <th className="py-3 px-4 font-bold text-right">Action</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100 font-medium">
@@ -190,13 +191,8 @@ const HodDashboard = () => {
                   </td>
                   <td className="py-3.5 px-4">
                     <span className="inline-block px-3 py-1 text-[11px] font-bold rounded-full bg-blue-100/70 text-blue-700 border border-blue-200">
-                      {task.status === 'RATED' ? 'APPROVED' : task.status}
+                      {task.status === 'RATED' ? 'APPROVED' : task.status === 'SUBMITTED' ? 'PENDING REVIEW' : task.status}
                     </span>
-                  </td>
-                  <td className="py-3.5 px-4 text-right">
-                    <button className="px-4 py-1.5 bg-[#0B5C35] hover:bg-[#09482b] text-white rounded-lg text-xs font-bold transition-all shadow-sm">
-                      Review
-                    </button>
                   </td>
                 </tr>
               ))}
@@ -211,6 +207,6 @@ const HodDashboard = () => {
       </div>
     </div>
   );
-}
+};
 
 export default HodDashboard;

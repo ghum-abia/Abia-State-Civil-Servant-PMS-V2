@@ -95,7 +95,7 @@ const TaskScoreModal = ({ scoreData, onClose }) => {
             <div className="flex items-center justify-between">
               <span className="flex items-center gap-1.5">
                 <User size={13} className="text-slate-400" />
-                Evaluated / Approved By:
+                Approved By:
               </span>
               <span className="font-semibold text-slate-800">{approved_by || 'N/A'}</span>
             </div>

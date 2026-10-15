@@ -155,8 +155,13 @@ const StaffTasksPage = () => {
                     </div>
 
                     <div className="flex items-center justify-between">
-                      <span>Task Weight:</span>
-                      <span className="font-bold text-slate-800">{task.weight}%</span>
+                      <span>Task Priority:</span>
+                      <span className="font-bold text-slate-800">
+                    {task.weight > 0 && task.weight <=4 ? 'Low' 
+                  : task.weight > 4 && task.weight <=6 ? 'Medium' 
+                  :task.weight > 6 && task.weight <=8 ? 'High' 
+                  :task.weight > 8  ? 'Critical' : 'None'}
+                      </span>
                     </div>
 
                     <div className="flex items-center justify-between">
@@ -170,7 +175,7 @@ const StaffTasksPage = () => {
                   {/* Rejection/Correction Reason notice if applicable */}
                   {(task.status?.toUpperCase() === 'NEEDS_CORRECTION' || task.status?.toUpperCase() === 'REJECTED') && task.last_rejection_reason && (
                     <div className="mt-3 p-2.5 bg-amber-50 border border-amber-100 rounded-lg text-[11px] text-amber-800">
-                      <strong className="block font-semibold">Feedback / Correction Required:</strong>
+                      <strong className="block font-semibold">Reasons:</strong>
                       {task.last_rejection_reason}
                     </div>
                   )}

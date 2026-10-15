@@ -27,7 +27,7 @@ export const sidebarRoutes = [
   { title: 'Dashboard Overview', path: '/dashboard', icon: LayoutDashboard, roles: ['HOD'] },
   { title: 'My Staffs', path: '/mystaffs', icon: Users, roles: ['HOD'] },
   { title: 'Tasks Inbox', path: '/hodtasks', icon: Folder, roles: ['HOD'] },
-  { title: 'Assign Tasks', path: '/assign', icon: FolderPlus, roles: ['HOD'] },
+  { title: 'Assign Tasks', path: '/assigntasks', icon: FolderPlus, roles: ['HOD'] },
   { title: 'Team Performance', path: '/hodperformance', icon: TrendingUp, roles: ['HOD'] },
   { title: 'Reports', path: '/hodreports', icon: FileText, roles: ['HOD'] },
   { title: 'My Profile', path: '/hodprofile', icon: User, roles: ['HOD'] },

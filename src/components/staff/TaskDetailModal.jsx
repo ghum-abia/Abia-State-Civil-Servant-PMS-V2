@@ -79,8 +79,13 @@ export default function TaskDetailModal({ taskId, onClose }) {
                   <p className="text-xs font-bold text-slate-900 mt-1">{task.status}</p>
                 </div>
                 <div className="p-3 bg-white border border-slate-200 rounded-xl shadow-sm">
-                  <p className="text-[10px] font-semibold text-slate-400 uppercase">Weight</p>
-                  <p className="text-xs font-bold text-slate-900 mt-1">{task.weight}%</p>
+                  <p className="text-[10px] font-semibold text-slate-400 uppercase">Priority</p>
+                  <p className="text-xs font-bold text-slate-900 mt-1">
+                    {task.weight > 0 && task.weight <=4 ? 'Low' 
+                  : task.weight > 4 && task.weight <=6 ? 'Medium' 
+                  :task.weight > 6 && task.weight <=8 ? 'High' 
+                  :task.weight > 8  ? 'Critical' : 'None'}
+                  </p>
                 </div>
                 <div className="p-3 bg-white border border-slate-200 rounded-xl shadow-sm">
                   <p className="text-[10px] font-semibold text-slate-400 uppercase">Due Date</p>

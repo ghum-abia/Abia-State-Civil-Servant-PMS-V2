@@ -16,7 +16,8 @@ import OfficerSettings from '../pages/staff/Settings';
 
 // HOD Pages
 import HODStaffs from '../pages/hod/MyStaffs';
-import HODTasks from '../pages/hod/Tasks';
+import HODTasks from '../pages/hod/Tasks'; // Task Inbox Page
+import HODTaskDetail from '../pages/hod/TaskDetail'; // <-- Newly added Task Detail Page
 import HODAssign from '../pages/hod/Assign';
 import HODPerformance from '../pages/hod/Performance';
 import HODReports from '../pages/hod/Reports';
@@ -49,6 +50,7 @@ const AppRoutes = () => {
             <Route path="/mystaffs" element={<HODStaffs />} />
             <Route path="/assigntasks" element={<HODAssign />} />
             <Route path="/hodtasks" element={<HODTasks />} />
+            <Route path="/hodtasks/:taskId" element={<HODTaskDetail />} /> {/* <-- Sub-route for individual task review/grading */}
             <Route path="/hodperformance" element={<HODPerformance />} />
             <Route path="/hodreports" element={<HODReports />} />
             <Route path="/hodprofile" element={<HODProfile />} />

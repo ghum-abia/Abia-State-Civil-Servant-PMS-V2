@@ -1,26 +1,20 @@
 // src/pages/staff/Performance.jsx
 import React, { useState, useEffect } from 'react';
-import { useStaffPerformance } from '../../hooks/staff/useStaffPerformance'
+import { useStaffPerformance } from '../../hooks/staff/useStaffPerformance';
+import { useOfficerDashboard } from '../../hooks/staff/useOfficerDashboard';
 import OfficerPerformanceTrend from '../../components/staff/OfficerPerformanceTrend';
-import { 
-  ResponsiveContainer, 
-  AreaChart, 
-  Area, 
-  XAxis, 
-  YAxis, 
-  Tooltip, 
-  CartesianGrid 
-} from 'recharts';
 
 const Performance = () => {
-  const { scorecard, isLoading, fetchMyScorecard } = useStaffPerformance();
+  const { scorecard, fetchMyScorecard } = useStaffPerformance();
+  const { dashboardData, fetchDashboardData } = useOfficerDashboard();
   const [activeTab, setActiveTab] = useState('Overview');
 
   useEffect(() => {
     fetchMyScorecard();
-  }, [fetchMyScorecard]);
+    fetchDashboardData();
+  }, [fetchMyScorecard, fetchDashboardData]);
 
-  // Tab Navigation items matching the reference image
+  // Tab Navigation items
   const navTabs = [
     { id: 'Overview', label: 'Overview' },
   ];
@@ -31,32 +25,29 @@ const Performance = () => {
       title: 'Performance Score',
       value: scorecard?.overall_performance || 0,
       target: 'Target 100%',
-      color: 'emerald',
       dotColor: 'bg-emerald-600',
     },
     {
       title: 'Quality',
       value: scorecard?.average_quality || 0,
       target: 'Target 100%',
-      color: 'amber',
       dotColor: 'bg-blue-600',
     },
     {
       title: 'Efficiency',
       value: scorecard?.average_efficiency || 0,
       target: 'Target 100%',
-      color: 'emerald',
       dotColor: 'bg-emerald-600',
     },
     {
       title: 'KPI Achievement',
       value: scorecard?.overall_performance || 0,
       target: 'Target 100%',
-      color: 'emerald',
       dotColor: 'bg-emerald-600',
     },
   ];
 
+  const sixMonthTrend = dashboardData?.six_month_trend || [];
 
   return (
     <div className="max-w-7xl mx-auto space-y-6 pb-12 font-sans font-semibold">
@@ -94,9 +85,6 @@ const Performance = () => {
                       <span className={`w-2 h-2 rounded-full ${card.dotColor}`} />
                       <span className="text-xs font-bold text-slate-500">{card.title}</span>
                     </div>
-                    <span className="bg-emerald-100/60 text-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded-md">
-                      {card.points}
-                    </span>
                   </div>
 
                   <h3 className="text-4xl font-sans font-semibold text-slate-900 mt-3">{card.value}%</h3>
@@ -109,14 +97,13 @@ const Performance = () => {
             ))}
           </div>
 
-          {/* Performance Trend Card */}
+          {/* Performance Trend Card with trendData passed */}
           <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm space-y-4">
-            <OfficerPerformanceTrend />
+            <OfficerPerformanceTrend trendData={sixMonthTrend} />
           </div>
         </>
       )}
 
-      {/* Placeholders for other tabs */}
       {activeTab !== 'Overview' && (
         <div className="bg-white p-12 rounded-2xl border border-slate-100 shadow-sm text-center">
           <h3 className="text-sm font-bold text-slate-700">{activeTab} Details</h3>
@@ -125,6 +112,6 @@ const Performance = () => {
       )}
     </div>
   );
-}
+};
 
 export default Performance;

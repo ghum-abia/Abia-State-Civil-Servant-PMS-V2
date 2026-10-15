@@ -10,16 +10,13 @@ import {
   CartesianGrid 
 } from 'recharts';
 
-const HodPerformanceTrend = ({ averageScore = 0 }) => {
-  // 6-month historical trend line anchored with the current period average score
-  const chartData = [
-    { month: 'Apr', score: 78 },
-    { month: 'May', score: 81 },
-    { month: 'Jun', score: 79 },
-    { month: 'Jul', score: 84 },
-    { month: 'Aug', score: 82 },
-    { month: 'Sep', score: averageScore || 84 },
-  ];
+const HodPerformanceTrend = ({ trendData = [] }) => {
+  // Map the backend six_month_trend data (e.g., "Sep 2026" -> "Sep")
+  const chartData = trendData.map((item) => ({
+    month: item.month_name.split(' ')[0], // Extracts "May", "Jun", etc.
+    score: item.average_performance,
+    completed: item.tasks_completed,
+  }));
 
   return (
     <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm flex flex-col justify-between space-y-4">
@@ -40,7 +37,12 @@ const HodPerformanceTrend = ({ averageScore = 0 }) => {
             <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
             <XAxis dataKey="month" tickLine={false} axisLine={false} tick={{ fill: '#94a3b8', fontSize: 10 }} />
             <YAxis domain={[0, 100]} tickLine={false} axisLine={false} tick={{ fill: '#94a3b8', fontSize: 10 }} />
-            <Tooltip />
+            <Tooltip 
+              formatter={(value, name) => [
+                name === 'score' ? `${value}%` : value, 
+                name === 'score' ? 'Avg Performance' : 'Tasks Completed'
+              ]} 
+            />
             <Area
               type="monotone"
               dataKey="score"
@@ -55,6 +57,6 @@ const HodPerformanceTrend = ({ averageScore = 0 }) => {
       </div>
     </div>
   );
-}
+};
 
 export default HodPerformanceTrend;

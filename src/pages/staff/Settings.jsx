@@ -33,12 +33,6 @@ const Settings = () => {
   return (
     <div className="max-w-7xl mx-auto space-y-6 font-sans pb-12">
       {/* Header */}
-      <div>
-        <h2 className="text-xl font-bold text-slate-900">Staff Account Settings</h2>
-        <p className="text-xs text-slate-500 mt-0.5">
-          Manage your official civil service profile credentials and department assignments.
-        </p>
-      </div>
 
       {successMessage && (
         <div className="flex items-center gap-2 p-4 bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs rounded-xl shadow-sm">
