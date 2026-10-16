@@ -192,7 +192,7 @@ const HomePage = () => {
             <button
               type="button"
               onClick={handleDashboardRedirect}
-              className="inline-flex min-h-10 items-center justify-center gap-2 rounded-lg bg-[#0B5C35] px-3.5 py-2.5 text-xs font-bold text-white shadow-sm transition duration-200 hover:bg-[#084528] focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-700 focus-visible:ring-offset-2 active:scale-[0.98] sm:px-5 sm:text-sm"
+              className=" min-h-10 hidden lg:inline-flex items-center justify-center gap-2 rounded-lg bg-[#0B5C35] px-3.5 py-2.5 text-xs font-bold text-white shadow-sm transition duration-200 hover:bg-[#084528] focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-700 focus-visible:ring-offset-2 active:scale-[0.98] sm:px-5 sm:text-sm"
             >
               {isAuthenticated ? 'Dashboard' : 'Sign In'}
               <ArrowRight size={15} aria-hidden="true" />
@@ -258,7 +258,7 @@ const HomePage = () => {
             className="pointer-events-none absolute -bottom-40 -left-32 -z-10 h-[380px] w-[380px] rounded-full bg-amber-100/35 blur-3xl"
           />
 
-          <div className="mx-auto grid max-w-7xl items-center gap-12 px-5 py-16 sm:py-20 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14 lg:px-8 lg:py-12">
+          <div className="mx-auto grid max-w-7xl items-center gap-12 px-5 py-4 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14 lg:px-8">
             {/* Hero copy */}
             <div className="relative z-10 max-w-2xl">
               <h1 className="max-w-2xl text-4xl font-black leading-[1.12] tracking-[-0.045em] text-slate-950 sm:text-5xl md:text-6xl lg:text-[3.8rem] xl:text-[4.25rem]">
@@ -281,7 +281,7 @@ const HomePage = () => {
                   onClick={handleDashboardRedirect}
                   className="inline-flex min-h-12 items-center justify-center gap-2 rounded-lg bg-[#0B5C35] px-6 py-3.5 text-sm font-bold text-white shadow-lg shadow-emerald-950/15 transition duration-200 hover:-translate-y-0.5 hover:bg-[#084528] hover:shadow-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-700 focus-visible:ring-offset-2 active:translate-y-0"
                 >
-                  {isAuthenticated ? 'Go to Dashboard' : 'Access the PMS Portal'}
+                  {isAuthenticated ? 'Go to Dashboard' : 'Access Portal'}
                   <ArrowRight size={17} aria-hidden="true" />
                 </button>
 
@@ -451,11 +451,7 @@ const HomePage = () => {
         >
           <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-start lg:gap-20">
             <div>
-              <span className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.18em] text-emerald-800">
-                About the platform
-              </span>
-
-              <h2 className="mt-5 text-3xl font-black leading-tight tracking-tight text-slate-950 sm:text-4xl">
+              <h2 className=" text-3xl font-black leading-tight tracking-tight text-slate-950 sm:text-4xl">
                 Making performance management more
                 <span className="text-[#0B5C35]"> purposeful.</span>
               </h2>
@@ -541,16 +537,11 @@ const HomePage = () => {
         {/* Capabilities */}
         <section
           id="features"
-          className="scroll-mt-24 bg-slate-50 px-5 py-16 sm:py-20 lg:px-8 lg:py-24"
+          className="scroll-mt-24 bg-slate-50 px-5 py-16 sm:py-20 lg:px-8"
         >
           <div className="mx-auto max-w-7xl">
             <div className="mx-auto mb-12 max-w-2xl text-center sm:mb-16">
-              <span className="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-white px-3.5 py-2 text-[10px] font-bold uppercase tracking-[0.16em] text-emerald-900 sm:text-xs">
-                <Layers3 size={14} aria-hidden="true" />
-                A coordinated digital framework
-              </span>
-
-              <h2 className="mt-5 text-3xl font-black tracking-tight text-slate-950 sm:text-4xl">
+                 <h2 className=" text-3xl font-black tracking-tight text-slate-950 sm:text-4xl">
                 Built around better performance
               </h2>
 
@@ -604,11 +595,7 @@ const HomePage = () => {
         >
           <div className="mx-auto max-w-7xl">
             <div className="mx-auto max-w-2xl text-center">
-              <span className="text-xs font-bold uppercase tracking-[0.18em] text-emerald-800">
-                The performance cycle
-              </span>
-
-              <h2 className="mt-4 text-3xl font-black tracking-tight text-slate-950 sm:text-4xl">
+              <h2 className=" text-3xl font-black tracking-tight text-slate-950 sm:text-4xl">
                 From objectives to outcomes
               </h2>
 
@@ -665,10 +652,6 @@ const HomePage = () => {
           <div className="relative mx-auto max-w-7xl">
             <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-center lg:gap-16">
               <div>
-                <span className="text-xs font-bold uppercase tracking-[0.18em] text-emerald-200">
-                  Guiding principles
-                </span>
-
                 <h2 className="mt-4 text-3xl font-black leading-tight tracking-tight sm:text-4xl">
                   A culture of responsibility and results.
                 </h2>
