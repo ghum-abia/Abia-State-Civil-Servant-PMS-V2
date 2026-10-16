@@ -23,10 +23,12 @@ import HODPerformance from '../pages/hod/Performance';
 import HODReports from '../pages/hod/Reports';
 import HODProfile from '../pages/hod/Profile';
 import HODNotification from '../pages/hod/Notification';
-
+import ScrollToTop
+ from '../components/UI/ScrollToTop';
 const AppRoutes = () => {
   return (
     <BrowserRouter>
+    <ScrollToTop />
       <Routes>
         {/* Public Routes */}
         <Route path="/" element={<HomePage />} />
