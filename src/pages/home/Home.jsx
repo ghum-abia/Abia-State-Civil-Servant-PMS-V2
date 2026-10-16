@@ -153,7 +153,7 @@ const HomePage = () => {
   ];
 
   return (
-    <div className="min-h-screen overflow-x-hidden bg-white font-sans text-slate-800 antialiased">
+    <div className="min-h-screen overflow-x-hidden bg-white font-semibold text-slate-800 antialiased">
       
 
       {/* Main navigation */}
@@ -261,7 +261,7 @@ const HomePage = () => {
           <div className="mx-auto grid max-w-7xl items-center gap-12 px-5 py-4 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14 lg:px-8">
             {/* Hero copy */}
             <div className="relative z-10 max-w-2xl">
-              <h1 className="max-w-2xl text-4xl font-black leading-[1.12] tracking-[-0.045em] text-slate-950 sm:text-5xl md:text-6xl lg:text-[3.8rem] xl:text-[4.25rem]">
+              <h1 className="max-w-2xl text-4xl font-semibold leading-[1.12] tracking-[-0.045em] text-slate-950 sm:text-5xl md:text-6xl lg:text-[3.8rem] xl:text-[4.25rem]">
                 Driving Better Performance in
                 <span className="mt-2 block text-[#0B5C35]">
                   Abia State Public Service.
@@ -451,7 +451,7 @@ const HomePage = () => {
         >
           <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-start lg:gap-20">
             <div>
-              <h2 className=" text-3xl font-black leading-tight tracking-tight text-slate-950 sm:text-4xl">
+              <h2 className=" text-3xl font-semibold leading-tight tracking-tight text-slate-950 sm:text-4xl">
                 Making performance management more
                 <span className="text-[#0B5C35]"> purposeful.</span>
               </h2>
@@ -541,7 +541,7 @@ const HomePage = () => {
         >
           <div className="mx-auto max-w-7xl">
             <div className="mx-auto mb-12 max-w-2xl text-center sm:mb-16">
-                 <h2 className=" text-3xl font-black tracking-tight text-slate-950 sm:text-4xl">
+                 <h2 className=" text-3xl font-semibold tracking-tight text-slate-950 sm:text-4xl">
                 Built around better performance
               </h2>
 
@@ -595,7 +595,7 @@ const HomePage = () => {
         >
           <div className="mx-auto max-w-7xl">
             <div className="mx-auto max-w-2xl text-center">
-              <h2 className=" text-3xl font-black tracking-tight text-slate-950 sm:text-4xl">
+              <h2 className=" text-3xl font-semibold tracking-tight text-slate-950 sm:text-4xl">
                 From objectives to outcomes
               </h2>
 
@@ -652,7 +652,7 @@ const HomePage = () => {
           <div className="relative mx-auto max-w-7xl">
             <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-center lg:gap-16">
               <div>
-                <h2 className="mt-4 text-3xl font-black leading-tight tracking-tight sm:text-4xl">
+                <h2 className="mt-4 text-3xl font-semibold leading-tight tracking-tight sm:text-4xl">
                   A culture of responsibility and results.
                 </h2>
 
@@ -709,7 +709,7 @@ const HomePage = () => {
                   <Lock size={23} aria-hidden="true" />
                 </div>
 
-                <h2 className="mt-5 text-2xl font-black tracking-tight text-slate-950 sm:text-3xl">
+                <h2 className="mt-5 text-2xl font-semibold tracking-tight text-slate-950 sm:text-3xl">
                   Your performance workspace awaits.
                 </h2>
 
@@ -888,7 +888,7 @@ export default HomePage;
 //   const roleLabel = profile?.pms_role === 'officer' ? 'STAFF' : profile?.pms_role;
 
 //   return (
-//     <div className="min-h-screen bg-slate-50 font-sans text-slate-800 flex flex-col justify-between">
+//     <div className="min-h-screen bg-slate-50 font-semibold text-slate-800 flex flex-col justify-between">
 //       {/* Top Navbar */}
 //       <header className="bg-white border-b border-slate-200 sticky top-0 z-50">
 //         <div className="max-w-8xl mx-auto px-6 h-20 flex items-center justify-between">
@@ -934,7 +934,7 @@ export default HomePage;
 
 //           {/* Hero Content */}
 //           <div className="max-w-5xl mx-auto mb-8 md:mb-0 text-center space-y-6 relative z-10">
-//             <h1 className="text-4xl md:text-6xl font-black text-slate-900 tracking-tight leading-tight">
+//             <h1 className="text-4xl md:text-6xl font-semibold text-slate-900 tracking-tight leading-tight">
 //               Driving Accountability And <br />
 //               <span className="text-[#0B5C35]">Excellence in Governance</span>
 //             </h1>
@@ -965,19 +965,19 @@ export default HomePage;
 //         <section className="bg-white border-b border-slate-200 py-8 px-6">
 //           <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
 //             <div className="space-y-1">
-//               <h3 className="text-2xl md:text-3xl font-black text-[#0B5C35]">100%</h3>
+//               <h3 className="text-2xl md:text-3xl font-semibold text-[#0B5C35]">100%</h3>
 //               <p className="text-xs text-slate-500 font-semibold uppercase tracking-wider">Digital Task Tracking</p>
 //             </div>
 //             <div className="space-y-1">
-//               <h3 className="text-2xl md:text-3xl font-black text-slate-900">Multi-Tier</h3>
+//               <h3 className="text-2xl md:text-3xl font-semibold text-slate-900">Multi-Tier</h3>
 //               <p className="text-xs text-slate-500 font-semibold uppercase tracking-wider">HOD & Staff Workflows</p>
 //             </div>
 //             <div className="space-y-1">
-//               <h3 className="text-2xl md:text-3xl font-black text-[#0B5C35]">Weighted</h3>
+//               <h3 className="text-2xl md:text-3xl font-semibold text-[#0B5C35]">Weighted</h3>
 //               <p className="text-xs text-slate-500 font-semibold uppercase tracking-wider">Performance Grading</p>
 //             </div>
 //             <div className="space-y-1">
-//               <h3 className="text-2xl md:text-3xl font-black text-slate-900">Secure</h3>
+//               <h3 className="text-2xl md:text-3xl font-semibold text-slate-900">Secure</h3>
 //               <p className="text-xs text-slate-500 font-semibold uppercase tracking-wider">State MDA Compliance</p>
 //             </div>
 //           </div>
@@ -986,7 +986,7 @@ export default HomePage;
 //         {/* Core Capabilities Section */}
 //         <section id="features" className="py-24 px-6 max-w-7xl mx-auto">
 //           <div className="text-center max-w-xl mx-auto mb-16 space-y-2">
-//             <h2 className="text-2xl md:text-3xl font-black text-slate-900">System Capabilities</h2>
+//             <h2 className="text-2xl md:text-3xl font-semibold text-slate-900">System Capabilities</h2>
 //             <p className="text-xs sm:text-sm text-slate-500 font-medium">Streamlining workflow evaluation across all MDAs</p>
 //           </div>
 
@@ -1027,7 +1027,7 @@ export default HomePage;
 //         <section className="bg-slate-100/70 border-y border-slate-200 py-20 px-6">
 //           <div className="max-w-7xl mx-auto space-y-12">
 //             <div className="text-center max-w-xl mx-auto space-y-2">
-//               <h2 className="text-2xl md:text-3xl font-black text-slate-900">Administrative Standards</h2>
+//               <h2 className="text-2xl md:text-3xl font-semibold text-slate-900">Administrative Standards</h2>
 //               <p className="text-xs sm:text-sm text-slate-500 font-medium">Core pillars guiding state service delivery</p>
 //             </div>
 
@@ -1064,7 +1064,7 @@ export default HomePage;
 //           <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-emerald-100 text-[#0B5C35] mb-2">
 //             <Lock size={24} />
 //           </div>
-//           <h2 className="text-2xl md:text-3xl font-black text-slate-900">Secure Authorized Access</h2>
+//           <h2 className="text-2xl md:text-3xl font-semibold text-slate-900">Secure Authorized Access</h2>
 //           <p className="text-xs sm:text-sm text-slate-600 max-w-xl mx-auto leading-relaxed">
 //             This portal is restricted to accredited Abia State Civil Service personnel. Sign in with your official credentials to access your designated workspace.
 //           </p>
