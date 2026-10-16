@@ -21,6 +21,7 @@ export const sidebarRoutes = [
   { title: 'Tasks', path: '/tasks', icon: Folder, roles: ['STAFF'] },
   { title: 'Reports', path: '/reports', icon: Calendar, roles: ['STAFF'] },
   { title: 'My Profile', path: '/profile', icon: Settings, roles: ['STAFF'] },
+  { title: 'Notifications', path: '/notification', icon: Bell, roles: ['STAFF'] },
 
 
   // --- HOD ---

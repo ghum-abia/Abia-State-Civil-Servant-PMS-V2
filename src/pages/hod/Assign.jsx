@@ -5,7 +5,7 @@ import { useAssignableStaff } from '../../hooks/hod/useAssignableStaff';
 import { useCreateTask } from '../../hooks/hod/useCreateTask';
 import { AlertCircle, CheckCircle2, Loader2, ArrowLeft } from 'lucide-react';
 
-const AssignTask =()=> {
+const AssignTask = () => {
   const navigate = useNavigate();
   const { staffList, isLoading: isLoadingStaff, fetchAssignableStaff } = useAssignableStaff();
   const { createTask, isSubmitting, error: apiError } = useCreateTask();
@@ -45,11 +45,17 @@ const AssignTask =()=> {
       return;
     }
 
+    const parsedDate = new Date(formData.due_date);
+    if (isNaN(parsedDate.getTime())) {
+      setFormError('Please provide a valid due date and time.');
+      return;
+    }
+
     const payload = {
       title: formData.title,
       description: formData.description,
       assignee_id: formData.assignee_id,
-      due_date: new Date(formData.due_date).toISOString(), 
+      due_date: parsedDate.toISOString(), 
       weight: Number(formData.weight),
       target_submissions: Number(formData.target_submissions),
     };
@@ -57,7 +63,8 @@ const AssignTask =()=> {
     const result = await createTask(payload);
     if (result.success) {
       setSuccessMsg('Task successfully created and assigned!');
-      setTimeout(() => navigate('/hod/dashboard'), 1500);
+      // Navigate safely back to the previous screen (your HOD section) instead of an unhandled path
+      setTimeout(() => navigate(-1), 1200);
     }
   };
 
@@ -66,10 +73,9 @@ const AssignTask =()=> {
       {/* Header & Back Button */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-xl font-bold text-slate-900">Assign New Task</h2>
-          <p className="text-xs text-slate-500 mt-0.5">
+          <h2 className="text-slate-500 mt-0.5">
             Create and assign a structured task to an officer in your department.
-          </p>
+          </h2>
         </div>
         <button
           type="button"
@@ -171,10 +177,10 @@ const AssignTask =()=> {
                   onChange={handleChange}
                   className="w-full bg-slate-50/50 border border-slate-200 rounded-xl px-3.5 py-3 text-xs text-slate-800 focus:outline-none focus:border-emerald-600 transition-colors"
                 >
-                  <option value={4}>Low (Weight: 4)</option>
-                  <option value={6}>Medium (Weight: 6)</option>
-                  <option value={8}>High (Weight: 8)</option>
-                  <option value={10}>Critical (Weight: 10)</option>
+                  <option value={4}>Low</option>
+                  <option value={6}>Medium</option>
+                  <option value={8}>High</option>
+                  <option value={10}>Critical</option>
                 </select>
               </div>
 
@@ -271,6 +277,6 @@ const AssignTask =()=> {
       </form>
     </div>
   );
-}
+};
 
 export default AssignTask;

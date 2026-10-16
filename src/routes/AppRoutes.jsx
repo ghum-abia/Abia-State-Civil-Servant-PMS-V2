@@ -45,6 +45,7 @@ const AppRoutes = () => {
             <Route path="/reports" element={<OfficerReports />} />
             <Route path="/performance" element={<OfficerPerformance />} />
             <Route path="/profile" element={<OfficerSettings />} />
+            <Route path="/notification" element={<OfficerNotification />} />
           </Route>
 
           {/* HOD Routes */}

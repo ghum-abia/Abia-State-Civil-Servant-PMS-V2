@@ -1,6 +1,7 @@
-
+// src/pages/Home.jsx
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import { useAuthStore } from '../../store/authStore';
 import {
   ArrowRight,
@@ -154,10 +155,13 @@ const HomePage = () => {
 
   return (
     <div className="min-h-screen overflow-x-hidden bg-white font-semibold text-slate-800 antialiased">
-      
-
       {/* Main navigation */}
-      <header className="sticky top-0 z-50 border-b border-slate-200/80 bg-white/95 shadow-sm shadow-slate-900/[0.02] backdrop-blur-md">
+      <motion.header 
+        initial={{ y: -20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.4, ease: 'easeOut' }}
+        className="sticky top-0 z-50 border-b border-slate-200/80 bg-white/95 shadow-sm shadow-slate-900/[0.02] backdrop-blur-md"
+      >
         <div className="mx-auto flex h-[76px] max-w-7xl items-center justify-between gap-4 px-5 lg:px-8">
           <a
             href="#home"
@@ -170,7 +174,6 @@ const HomePage = () => {
               alt="Abia State PMS"
               className="h-11 w-auto max-w-[145px] object-contain sm:h-12"
             />
-
           </a>
 
           <nav
@@ -192,17 +195,11 @@ const HomePage = () => {
             <button
               type="button"
               onClick={handleDashboardRedirect}
-              className=" min-h-10 hidden lg:inline-flex items-center justify-center gap-2 rounded-lg bg-[#0B5C35] px-3.5 py-2.5 text-xs font-bold text-white shadow-sm transition duration-200 hover:bg-[#084528] focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-700 focus-visible:ring-offset-2 active:scale-[0.98] sm:px-5 sm:text-sm"
+              className="min-h-10 hidden lg:inline-flex items-center justify-center gap-2 rounded-lg bg-[#0B5C35] px-3.5 py-2.5 text-xs font-bold text-white shadow-sm transition duration-200 hover:bg-[#084528] focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-700 focus-visible:ring-offset-2 active:scale-[0.98] sm:px-5 sm:text-sm"
             >
               {isAuthenticated ? 'Dashboard' : 'Sign In'}
               <ArrowRight size={15} aria-hidden="true" />
             </button>
-
-            {isAuthenticated && (
-              <span className="hidden text-xs font-medium capitalize text-slate-500 xl:block">
-                {roleLabel}
-              </span>
-            )}
 
             <button
               type="button"
@@ -222,7 +219,10 @@ const HomePage = () => {
         </div>
 
         {mobileMenuOpen && (
-          <nav
+          <motion.nav
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
             id="mobile-navigation"
             aria-label="Mobile navigation"
             className="border-t border-slate-100 bg-white px-5 py-3 shadow-lg lg:hidden"
@@ -238,9 +238,9 @@ const HomePage = () => {
                 <ChevronRight size={16} aria-hidden="true" />
               </a>
             ))}
-          </nav>
+          </motion.nav>
         )}
-      </header>
+      </motion.header>
 
       <main>
         {/* Hero section */}
@@ -260,8 +260,13 @@ const HomePage = () => {
 
           <div className="mx-auto grid max-w-7xl items-center gap-12 px-5 py-4 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14 lg:px-8">
             {/* Hero copy */}
-            <div className="relative z-10 max-w-2xl">
-              <h1 className="max-w-2xl text-4xl font-semibold leading-[1.12] tracking-[-0.045em] text-slate-950 sm:text-5xl md:text-6xl lg:text-[3.8rem] xl:text-[4.25rem]">
+            <motion.div 
+              initial={{ opacity: 0, y: 25 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, ease: 'easeOut' }}
+              className="relative z-10 max-w-2xl"
+            >
+              <h1 className="max-w-2xl text-4xl font-semibold leading-[1.12] tracking-[-0.045em] text-slate-800 sm:text-5xl md:text-6xl lg:text-[3.8rem] xl:text-[4.25rem]">
                 Driving Better Performance in
                 <span className="mt-2 block text-[#0B5C35]">
                   Abia State Public Service.
@@ -320,10 +325,15 @@ const HomePage = () => {
                   People-focused
                 </span>
               </div>
-            </div>
+            </motion.div>
 
             {/* Hero visual */}
-            <div className="relative mx-auto w-full max-w-xl lg:max-w-none">
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.7, delay: 0.2, ease: 'easeOut' }}
+              className="relative mx-auto w-full max-w-xl lg:max-w-none"
+            >
               <div
                 aria-hidden="true"
                 className="absolute -inset-4 rounded-[2rem] bg-emerald-900/[0.04] blur-xl"
@@ -426,21 +436,7 @@ const HomePage = () => {
                   </div>
                 </div>
               </div>
-
-              <div className="absolute -bottom-5 -left-2 hidden items-center gap-3 rounded-xl border border-slate-100 bg-white px-4 py-3 shadow-xl sm:flex lg:-left-5">
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-50 text-emerald-800">
-                  <ShieldCheck size={21} aria-hidden="true" />
-                </div>
-                <div>
-                  <p className="text-xs font-bold text-slate-900">
-                    Responsible oversight
-                  </p>
-                  <p className="mt-1 text-[10px] text-slate-500">
-                    Structured performance processes
-                  </p>
-                </div>
-              </div>
-            </div>
+            </motion.div>
           </div>
         </section>
 
@@ -450,8 +446,13 @@ const HomePage = () => {
           className="scroll-mt-24 border-b border-slate-100 bg-white px-5 py-16 sm:py-20 lg:px-8 lg:py-24"
         >
           <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-start lg:gap-20">
-            <div>
-              <h2 className=" text-3xl font-semibold leading-tight tracking-tight text-slate-950 sm:text-4xl">
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: '-100px' }}
+              transition={{ duration: 0.5 }}
+            >
+              <h2 className="text-3xl font-semibold leading-tight tracking-tight text-slate-950 sm:text-4xl">
                 Making performance management more
                 <span className="text-[#0B5C35]"> purposeful.</span>
               </h2>
@@ -476,9 +477,15 @@ const HomePage = () => {
                 Understand the process
                 <ArrowRight size={16} aria-hidden="true" />
               </a>
-            </div>
+            </motion.div>
 
-            <div className="grid gap-4 sm:grid-cols-2">
+            <motion.div 
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: '-100px' }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="grid gap-4 sm:grid-cols-2"
+            >
               <div className="rounded-2xl border border-slate-200 bg-slate-50/80 p-6 transition duration-200 hover:border-emerald-200 hover:bg-emerald-50/40">
                 <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white text-emerald-800 shadow-sm ring-1 ring-slate-200/70">
                   <Target size={23} aria-hidden="true" />
@@ -530,7 +537,7 @@ const HomePage = () => {
                   organisational objectives.
                 </p>
               </div>
-            </div>
+            </motion.div>
           </div>
         </section>
 
@@ -540,8 +547,14 @@ const HomePage = () => {
           className="scroll-mt-24 bg-slate-50 px-5 py-16 sm:py-20 lg:px-8"
         >
           <div className="mx-auto max-w-7xl">
-            <div className="mx-auto mb-12 max-w-2xl text-center sm:mb-16">
-                 <h2 className=" text-3xl font-semibold tracking-tight text-slate-950 sm:text-4xl">
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+              className="mx-auto mb-12 max-w-2xl text-center sm:mb-16"
+            >
+              <h2 className="text-3xl font-semibold tracking-tight text-slate-950 sm:text-4xl">
                 Built around better performance
               </h2>
 
@@ -549,15 +562,19 @@ const HomePage = () => {
                 Practical capabilities to support planning, monitoring,
                 reviews, and accountability across the public service.
               </p>
-            </div>
+            </motion.div>
 
             <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-              {capabilities.map((item) => {
+              {capabilities.map((item, index) => {
                 const Icon = item.icon;
 
                 return (
-                  <article
+                  <motion.article
                     key={item.number}
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: '-50px' }}
+                    transition={{ duration: 0.4, delay: index * 0.1 }}
                     className="group relative overflow-hidden rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition duration-300 hover:-translate-y-1 hover:border-emerald-200 hover:shadow-xl hover:shadow-slate-900/[0.05] sm:p-7"
                   >
                     <div className="flex items-center justify-between">
@@ -581,7 +598,7 @@ const HomePage = () => {
                       aria-hidden="true"
                       className="absolute bottom-0 left-0 h-1 w-0 bg-[#0B5C35] transition-all duration-300 group-hover:w-full"
                     />
-                  </article>
+                  </motion.article>
                 );
               })}
             </div>
@@ -594,8 +611,14 @@ const HomePage = () => {
           className="scroll-mt-24 overflow-hidden bg-white px-5 py-16 sm:py-20 lg:px-8 lg:py-24"
         >
           <div className="mx-auto max-w-7xl">
-            <div className="mx-auto max-w-2xl text-center">
-              <h2 className=" text-3xl font-semibold tracking-tight text-slate-950 sm:text-4xl">
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+              className="mx-auto max-w-2xl text-center"
+            >
+              <h2 className="text-3xl font-semibold tracking-tight text-slate-950 sm:text-4xl">
                 From objectives to outcomes
               </h2>
 
@@ -603,7 +626,7 @@ const HomePage = () => {
                 A structured approach that connects planning, ongoing
                 monitoring, formal reviews, and professional development.
               </p>
-            </div>
+            </motion.div>
 
             <div className="relative mt-12 grid gap-8 sm:grid-cols-2 lg:mt-16 lg:grid-cols-4 lg:gap-6">
               <div
@@ -615,7 +638,14 @@ const HomePage = () => {
                 const Icon = step.icon;
 
                 return (
-                  <article key={step.title} className="relative text-center">
+                  <motion.article 
+                    key={step.title}
+                    initial={{ opacity: 0, y: 25 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.4, delay: index * 0.15 }}
+                    className="relative text-center"
+                  >
                     <div className="relative z-10 mx-auto flex h-14 w-14 items-center justify-center rounded-2xl border border-emerald-100 bg-white text-emerald-800 shadow-md shadow-emerald-900/[0.05]">
                       <Icon size={25} aria-hidden="true" />
                     </div>
@@ -631,7 +661,7 @@ const HomePage = () => {
                     <p className="mx-auto mt-3 max-w-sm text-sm leading-7 text-slate-600">
                       {step.description}
                     </p>
-                  </article>
+                  </motion.article>
                 );
               })}
             </div>
@@ -651,7 +681,12 @@ const HomePage = () => {
 
           <div className="relative mx-auto max-w-7xl">
             <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-center lg:gap-16">
-              <div>
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5 }}
+              >
                 <h2 className="mt-4 text-3xl font-semibold leading-tight tracking-tight sm:text-4xl">
                   A culture of responsibility and results.
                 </h2>
@@ -670,9 +705,15 @@ const HomePage = () => {
                   {isAuthenticated ? 'Open Dashboard' : 'Access the Portal'}
                   <ArrowRight size={16} aria-hidden="true" />
                 </button>
-              </div>
+              </motion.div>
 
-              <div className="grid gap-4 sm:grid-cols-2">
+              <motion.div 
+                initial={{ opacity: 0, x: 20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+                className="grid gap-4 sm:grid-cols-2"
+              >
                 {principles.map((principle) => {
                   const Icon = principle.icon;
 
@@ -695,14 +736,20 @@ const HomePage = () => {
                     </article>
                   );
                 })}
-              </div>
+              </motion.div>
             </div>
           </div>
         </section>
 
         {/* Secure access call to action */}
         <section className="bg-slate-50 px-5 py-16 sm:py-20 lg:px-8">
-          <div className="mx-auto max-w-5xl overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xl shadow-slate-900/[0.04] sm:rounded-3xl">
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="mx-auto max-w-5xl overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xl shadow-slate-900/[0.04] sm:rounded-3xl"
+          >
             <div className="grid lg:grid-cols-[1fr_auto] lg:items-center">
               <div className="p-7 sm:p-10 lg:p-12">
                 <div className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-50 text-emerald-800">
@@ -755,7 +802,7 @@ const HomePage = () => {
                 </a>
               </div>
             </div>
-          </div>
+          </motion.div>
         </section>
       </main>
 
@@ -849,250 +896,3 @@ const HomePage = () => {
 };
 
 export default HomePage;
-
-
-
-
-
-
-
-
-
-
-
-// // src/pages/Home.jsx
-// import React from 'react';
-// import { Link, useNavigate } from 'react-router-dom';
-// import { useAuthStore } from '../../store/authStore';
-// import { 
-//   BarChart3, 
-//   Users, 
-//   ArrowRight, 
-//   Building2, 
-//   Lock 
-// } from 'lucide-react';
-// import Logo from '/pms_logo.jpg';
-
-// const HomePage = () => {
-//   const { isAuthenticated, profile } = useAuthStore();
-//   const navigate = useNavigate();
-
-//   const handleDashboardRedirect = () => {
-//     if (!isAuthenticated) {
-//       navigate('/login');
-//     } else {
-//       navigate('/dashboard');
-//     }
-//   };
-
-//   const roleLabel = profile?.pms_role === 'officer' ? 'STAFF' : profile?.pms_role;
-
-//   return (
-//     <div className="min-h-screen bg-slate-50 font-semibold text-slate-800 flex flex-col justify-between">
-//       {/* Top Navbar */}
-//       <header className="bg-white border-b border-slate-200 sticky top-0 z-50">
-//         <div className="max-w-8xl mx-auto px-6 h-20 flex items-center justify-between">
-//           <div className="flex items-center gap-3">
-//             <img src={Logo} alt="Abia State PMS Logo" className="h-12" />
-//           </div>
-
-//           <div className="flex items-center gap-4">
-//             {isAuthenticated ? (
-//               <button
-//                 onClick={handleDashboardRedirect}
-//                 className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#0B5C35] hover:bg-[#09482b] text-white rounded-md font-bold text-xs sm:text-sm transition-all shadow-sm"
-//               >
-//                 Dashboard ({roleLabel || 'Portal'})
-//                 <ArrowRight size={16} />
-//               </button>
-//             ) : (
-//               <Link
-//                 to="/login"
-//                 className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#0B5C35] hover:bg-[#09482b] text-white rounded-md font-bold text-xs sm:text-sm transition-all shadow-sm"
-//               >
-//                 Sign In
-//                 <ArrowRight size={16} />
-//               </Link>
-//             )}
-//           </div>
-//         </div>
-//       </header>
-
-//       {/* Hero Section with Watermark Background */}
-//       <main className="flex-1">
-//         {/* Hero Section with Watermark Background */}
-//         <section className="relative bg-gradient-to-b from-white via-emerald-50/20 to-slate-100 md:py-20 px-6 border-b border-slate-200 overflow-hidden">
-          
-//           {/* Hero Watermark Logo (Straight & Upright) */}
-//           <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-[1000] select-none overflow-hidden">
-//             <img 
-//               src="/abia.png" 
-//               alt="Abia State Watermark" 
-//               className="w-[450px] md:w-[650px] lg:w-[800px] opacity-[0.12] object-contain"
-//             />
-//           </div>
-
-//           {/* Hero Content */}
-//           <div className="max-w-5xl mx-auto mb-8 md:mb-0 text-center space-y-6 relative z-10">
-//             <h1 className="text-4xl md:text-6xl font-semibold text-slate-900 tracking-tight leading-tight">
-//               Driving Accountability And <br />
-//               <span className="text-[#0B5C35]">Excellence in Governance</span>
-//             </h1>
-
-//             <p className="text-sm md:text-base text-slate-600 max-w-2xl mx-auto font-normal leading-relaxed">
-//               The centralized digital performance ecosystem for Abia State civil servants, department heads, and executive leadership to log assigned deliverables, monitor weighted scorecards, and audit compliance.
-//             </p>
-
-//             <div className="flex flex-wrap items-center justify-center gap-4 pt-4">
-//               <button
-//                 onClick={handleDashboardRedirect}
-//                 className="inline-flex items-center gap-2 px-6 py-3.5 bg-[#0B5C35] hover:bg-[#09482b] text-white rounded-md font-bold text-xs sm:text-sm transition-all shadow-md active:scale-[0.98]"
-//               >
-//                 Access Portal
-//                 <ArrowRight size={18} />
-//               </button>
-//               <a
-//                 href="#features"
-//                 className="inline-flex items-center gap-2 px-6 py-3.5 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 rounded-md font-bold text-xs sm:text-sm transition-all shadow-sm"
-//               >
-//                 Explore System Modules
-//               </a>
-//             </div>
-//           </div>
-//         </section>
-
-//         {/* Quick Stats / Highlights Bar */}
-//         <section className="bg-white border-b border-slate-200 py-8 px-6">
-//           <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-//             <div className="space-y-1">
-//               <h3 className="text-2xl md:text-3xl font-semibold text-[#0B5C35]">100%</h3>
-//               <p className="text-xs text-slate-500 font-semibold uppercase tracking-wider">Digital Task Tracking</p>
-//             </div>
-//             <div className="space-y-1">
-//               <h3 className="text-2xl md:text-3xl font-semibold text-slate-900">Multi-Tier</h3>
-//               <p className="text-xs text-slate-500 font-semibold uppercase tracking-wider">HOD & Staff Workflows</p>
-//             </div>
-//             <div className="space-y-1">
-//               <h3 className="text-2xl md:text-3xl font-semibold text-[#0B5C35]">Weighted</h3>
-//               <p className="text-xs text-slate-500 font-semibold uppercase tracking-wider">Performance Grading</p>
-//             </div>
-//             <div className="space-y-1">
-//               <h3 className="text-2xl md:text-3xl font-semibold text-slate-900">Secure</h3>
-//               <p className="text-xs text-slate-500 font-semibold uppercase tracking-wider">State MDA Compliance</p>
-//             </div>
-//           </div>
-//         </section>
-
-//         {/* Core Capabilities Section */}
-//         <section id="features" className="py-24 px-6 max-w-7xl mx-auto">
-//           <div className="text-center max-w-xl mx-auto mb-16 space-y-2">
-//             <h2 className="text-2xl md:text-3xl font-semibold text-slate-900">System Capabilities</h2>
-//             <p className="text-xs sm:text-sm text-slate-500 font-medium">Streamlining workflow evaluation across all MDAs</p>
-//           </div>
-
-//           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-//             <div className="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm space-y-4 hover:border-emerald-600/50 ease-in-out duration-500 transition-colors">
-//               <div className="w-12 h-12 bg-emerald-50 text-[#0B5C35] rounded-md flex items-center justify-center font-bold">
-//                 <BarChart3 size={24} />
-//               </div>
-//               <h3 className="text-base font-bold text-slate-900">Real-Time Scorecards</h3>
-//               <p className="text-xs sm:text-sm text-slate-500 leading-relaxed">
-//                 Track task submissions, efficiency ratios, quality indexes, and six-month performance trends dynamically via Recharts analytics.
-//               </p>
-//             </div>
-
-//             <div className="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm space-y-4 hover:border-emerald-600/50 ease-in-out duration-500 transition-colors">
-//               <div className="w-12 h-12 bg-emerald-50 text-[#0B5C35] rounded-md flex items-center justify-center font-bold">
-//                 <Users size={24} />
-//               </div>
-//               <h3 className="text-base font-bold text-slate-900">Role-Based Clearance</h3>
-//               <p className="text-xs sm:text-sm text-slate-500 leading-relaxed">
-//                 Tailored interfaces designed explicitly for Staff officers, Department Heads (HOD), and executive administrative supervisors.
-//               </p>
-//             </div>
-
-//             <div className="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm space-y-4 hover:border-emerald-600/50 ease-in-out duration-500 transition-colors">
-//               <div className="w-12 h-12 bg-emerald-50 text-[#0B5C35] rounded-md flex items-center justify-center font-bold">
-//                 <Building2 size={24} />
-//               </div>
-//               <h3 className="text-base font-bold text-slate-900">Statewide Compliance</h3>
-//               <p className="text-xs sm:text-sm text-slate-500 leading-relaxed">
-//                 Monitor MDA directory rosters, identify task bottlenecks, and maintain strict adherence to civil service administrative guidelines.
-//               </p>
-//             </div>
-//           </div>
-//         </section>
-
-//        {/* Governance & Administrative Standards */}
-//         <section className="bg-slate-100/70 border-y border-slate-200 py-20 px-6">
-//           <div className="max-w-7xl mx-auto space-y-12">
-//             <div className="text-center max-w-xl mx-auto space-y-2">
-//               <h2 className="text-2xl md:text-3xl font-semibold text-slate-900">Administrative Standards</h2>
-//               <p className="text-xs sm:text-sm text-slate-500 font-medium">Core pillars guiding state service delivery</p>
-//             </div>
-
-//             <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-//               <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-3">
-//                 <div className="w-8 h-8 rounded-lg bg-emerald-100 text-[#0B5C35] flex items-center justify-center font-bold text-xs">01</div>
-//                 <h4 className="text-sm font-bold text-slate-900">Data Integrity</h4>
-//                 <p className="text-xs text-slate-500 leading-relaxed">Eliminating bureaucratic bottlenecks with verified digital records and strict audit trails.</p>
-//               </div>
-
-//               <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-3">
-//                 <div className="w-8 h-8 rounded-lg bg-emerald-100 text-[#0B5C35] flex items-center justify-center font-bold text-xs">02</div>
-//                 <h4 className="text-sm font-bold text-slate-900">Transparent KPIs</h4>
-//                 <p className="text-xs text-slate-500 leading-relaxed">Equitable evaluation metrics ensuring every civil servant's contribution is visible and measured.</p>
-//               </div>
-
-//               <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-3">
-//                 <div className="w-8 h-8 rounded-lg bg-emerald-100 text-[#0B5C35] flex items-center justify-center font-bold text-xs">03</div>
-//                 <h4 className="text-sm font-bold text-slate-900">Inter-MDA Synergy</h4>
-//                 <p className="text-xs text-slate-500 leading-relaxed">Bridging ministries and departments onto a unified digital framework for seamless collaboration.</p>
-//               </div>
-
-//               <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-3">
-//                 <div className="w-8 h-8 rounded-lg bg-emerald-100 text-[#0B5C35] flex items-center justify-center font-bold text-xs">04</div>
-//                 <h4 className="text-sm font-bold text-slate-900">Executive Oversight</h4>
-//                 <p className="text-xs text-slate-500 leading-relaxed">Real-time analytical dashboards providing leadership with actionable intelligence.</p>
-//               </div>
-//             </div>
-//           </div>
-//         </section>
-
-//         {/* Security & Authentication Banner */}
-//         <section className="py-20 px-6 max-w-5xl mx-auto text-center space-y-6">
-//           <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-emerald-100 text-[#0B5C35] mb-2">
-//             <Lock size={24} />
-//           </div>
-//           <h2 className="text-2xl md:text-3xl font-semibold text-slate-900">Secure Authorized Access</h2>
-//           <p className="text-xs sm:text-sm text-slate-600 max-w-xl mx-auto leading-relaxed">
-//             This portal is restricted to accredited Abia State Civil Service personnel. Sign in with your official credentials to access your designated workspace.
-//           </p>
-//           <div>
-//             <button
-//               onClick={handleDashboardRedirect}
-//               className="inline-flex items-center gap-2 px-6 py-3.5 bg-[#0B5C35] hover:bg-[#09482b] text-white rounded-md font-bold text-xs sm:text-sm transition-all shadow-md"
-//             >
-//               Sign In to Portal
-//               <ArrowRight size={16} />
-//             </button>
-//           </div>
-//         </section>
-//       </main>
-
-//       {/* Footer */}
-//       <footer className="bg-white border-t border-slate-200 py-8 px-6 text-center text-xs text-slate-500">
-//         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-//           <p>© 2026 Abia State Government. All rights reserved.</p>
-//           <div className="flex items-center gap-6">
-//             <span className="hover:text-slate-800 transition-colors cursor-pointer">Privacy Policy</span>
-//             <span className="hover:text-slate-800 transition-colors cursor-pointer">Terms of Service</span>
-//             <span className="hover:text-slate-800 transition-colors cursor-pointer">Support Desk</span>
-//           </div>
-//         </div>
-//       </footer>
-//     </div>
-//   );
-// };
-
-// export default HomePage;

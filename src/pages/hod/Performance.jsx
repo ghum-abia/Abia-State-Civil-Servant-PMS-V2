@@ -18,6 +18,9 @@ export default function PerformancePage() {
 
   const {
     team_performance_average = 84,
+    team_quality_average = 0,
+    team_efficiency_average = 0, 
+    tasks_completed_count,
     team_leaderboard = [],
     six_month_trend = [],
   } = hodData || {};
@@ -33,10 +36,6 @@ export default function PerformancePage() {
   return (
     <div className="max-w-7xl mx-auto space-y-6 font-sans pb-12 text-slate-800">
       {/* Page Title */}
-      <div>
-        <h2 className="text-xl font-bold text-slate-900">Team Performance</h2>
-        <p className="text-xs text-slate-500 mt-0.5">Dashboard / Team Performance</p>
-      </div>
 
       {error && (
         <div className="flex items-center gap-2 p-4 bg-rose-50 border border-rose-200 text-rose-700 text-xs rounded-xl">
@@ -55,20 +54,20 @@ export default function PerformancePage() {
 
         <div className="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm">
           <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Average Quality</p>
-          <h3 className="text-3xl font-semibold text-blue-600 mt-1">82%</h3>
+          <h3 className="text-3xl font-semibold text-blue-600 mt-1">{team_quality_average}%</h3>
           <p className="text-[11px] text-slate-400 mt-0.5">Task quality score</p>
         </div>
 
         <div className="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm">
           <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Average Efficiency</p>
-          <h3 className="text-3xl font-semibold text-[#0B5C35] mt-1">87%</h3>
+          <h3 className="text-3xl font-semibold text-[#0B5C35] mt-1">{team_efficiency_average}%</h3>
           <p className="text-[11px] text-slate-400 mt-0.5">Submission & timeline</p>
         </div>
 
         <div className="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm">
-          <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">KPI Achievement</p>
-          <h3 className="text-3xl font-semibold text-[#0B5C35] mt-1">86%</h3>
-          <p className="text-[11px] text-slate-400 mt-0.5">Target: 90%</p>
+          <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Completed Task</p>
+          <h3 className="text-3xl font-semibold text-[#0B5C35] mt-1">{tasks_completed_count}</h3>
+          <p className="text-[11px] text-slate-400 mt-0.5">This Period</p>
         </div>
       </div>
 

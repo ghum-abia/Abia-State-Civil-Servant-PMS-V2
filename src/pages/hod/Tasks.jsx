@@ -78,7 +78,7 @@ export default function TaskInboxPage() {
           </p>
         </div>
         <Link
-          to="/hod/assign-task"
+          to="/assigntasks"
           className="inline-flex items-center gap-2 px-4 py-2.5 bg-[#0B5C35] hover:bg-[#09482b] text-white rounded-xl text-xs font-bold transition-all shadow-sm"
         >
           <Plus size={16} /> Assign New Task
