@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { useAuthStore } from '../../store/authStore';
 import { User, Shield, Building, Mail, Hash, CheckCircle2, Lock } from 'lucide-react';
 
-const Settings = () => {
+const Profile = () => {
   // Retrieve user profile data from auth store
   const { user } = useAuthStore();
   const profile = user?.profile || {};
@@ -11,7 +11,7 @@ const Settings = () => {
   const [formData, setFormData] = useState({
     fullname: profile.fullname || 'John Doe',
     email: profile.email || 'john.doe@abiastate.gov.ng',
-    staffId: profile.staff_id || 'STF-001',
+    staffId: profile.staff_id || 'STF-0012',
     mda: profile.mda_id || 'MDA-FINANCE',
     department: profile.department_id || 'DEP-ACCOUNTS',
     role: profile.pms_role || 'STAFF',
@@ -53,7 +53,7 @@ const Settings = () => {
               <p className="text-xs text-emerald-100/90 font-mono mt-0.5">Staff ID: {formData.staffId}</p>
             </div>
           </div>
-          <span className="px-3 py-1 bg-white/15 border border-white/20 text-white text-[11px] font-extrabold rounded-full">
+          <span className="px-3 py-1 bg-white/15 border border-white/20 text-white text-[11px] font-semibold rounded-full">
             Role: {formData.role}
           </span>
         </div>
@@ -182,4 +182,4 @@ const Settings = () => {
   );
 };
 
-export default Settings;
+export default Profile;

@@ -5,9 +5,6 @@ import {
   FileArchive,
   User,
   Users2,
-  FileBadge,
-  Settings2,
-  Briefcase,
   Boxes,
   FolderPlus,
   Bell
@@ -20,8 +17,8 @@ export const sidebarRoutes = [
   { title: 'My Performance', path: '/performance', icon: FileText, roles: ['STAFF'] },
   { title: 'Tasks', path: '/tasks', icon: Folder, roles: ['STAFF'] },
   { title: 'Reports', path: '/reports', icon: Calendar, roles: ['STAFF'] },
-  { title: 'My Profile', path: '/profile', icon: Settings, roles: ['STAFF'] },
   { title: 'Notifications', path: '/notification', icon: Bell, roles: ['STAFF'] },
+  { title: 'My Profile', path: '/profile', icon: User, roles: ['STAFF'] },
 
 
   // --- HOD ---
@@ -31,20 +28,17 @@ export const sidebarRoutes = [
   { title: 'Assign Tasks', path: '/assigntasks', icon: FolderPlus, roles: ['HOD'] },
   { title: 'Team Performance', path: '/hodperformance', icon: TrendingUp, roles: ['HOD'] },
   { title: 'Reports', path: '/hodreports', icon: FileText, roles: ['HOD'] },
-  { title: 'My Profile', path: '/hodprofile', icon: User, roles: ['HOD'] },
   { title: 'Notification', path: '/hodnotification', icon: Bell, roles: ['HOD'] },
+  { title: 'My Profile', path: '/hodprofile', icon: User, roles: ['HOD'] },
 
 
   // --- PERM SEC & DIC'S  --- HOM ---
   { title: 'Dashboard', path: '/dashboard', icon: LayoutDashboard, roles: ['HOM'] },
   { title: 'MDA Performance', path: '/mdaperformance', icon: Users, roles: ['HOM'] },
-  { title: 'Departments', path: '/departments', icon: BarChart3, roles: ['HOM'] },
-  { title: 'Objectives', path: '/objectives', icon: BarChart3, roles: ['HOM'] },
-  { title: 'KPIs', path: '/kpis', icon: BarChart3, roles: ['HOM'] },
+  { title: 'Departments', path: '/departments', icon: Building2, roles: ['HOM'] },
   { title: 'Reports', path: '/homreports', icon: BarChart3, roles: ['HOM'] },
-  { title: 'Notifications', path: '/homnotification', icon: BarChart3, roles: ['HOM'] },
-  { title: 'My Profile', path: '/homprofile', icon: BarChart3, roles: ['HOM'] },
-  { title: 'Settings', path: '/homsettings', icon: Settings, roles: ['HOM'] },
+  { title: 'Notifications', path: '/homnotification', icon: Bell, roles: ['HOM'] },
+  { title: 'My Profile', path: '/homprofile', icon: User, roles: ['HOM'] },
 
 
   // --- HOS ---

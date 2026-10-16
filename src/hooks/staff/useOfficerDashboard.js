@@ -7,12 +7,16 @@ export const useOfficerDashboard = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
-
-  const fetchDashboardData = useCallback(async () => {
+  const fetchDashboardData = useCallback(async (filters = {}) => {
     setIsLoading(true);
     setError(null);
+
+    const params = {};
+    if (filters.month) params.month = filters.month;
+    if (filters.year) params.year = filters.year;
+
     try {
-      const response = await api.get('/dashboard/officer');
+      const response = await api.get('/dashboard/officer', { params });
       setDashboardData(response.data);
     } catch (err) {
       const msg = 
@@ -29,6 +33,7 @@ export const useOfficerDashboard = () => {
     dashboardData,
     officer_id: dashboardData?.officer_id || null,
     officer_name: dashboardData?.officer_name || '',
+    selected_period: dashboardData?.selected_period || '',
     active_tasks: dashboardData?.active_tasks || 0,
     completed_tasks: dashboardData?.completed_tasks || 0,
     overdue_tasks: dashboardData?.overdue_tasks || 0,

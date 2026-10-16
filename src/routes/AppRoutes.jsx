@@ -12,7 +12,6 @@ import OfficerProfile from '../pages/staff/Profile';
 import OfficerNotification from '../pages/staff/Notification';
 import OfficerPerformance from '../pages/staff/Performance';
 import OfficerReports from '../pages/staff/Reports';
-import OfficerSettings from '../pages/staff/Settings';
 
 // HOD Pages
 import HODStaffs from '../pages/hod/MyStaffs';
@@ -25,6 +24,16 @@ import HODProfile from '../pages/hod/Profile';
 import HODNotification from '../pages/hod/Notification';
 import ScrollToTop
  from '../components/UI/ScrollToTop';
+
+
+//  HOM Pages
+import HOMDepartments from '../pages/hom/Departments'
+import HOMNotification from '../pages/hom/Notifications';
+import HOMPerformance from '../pages/hom/Performance';
+import HOMProfile from '../pages/hom/Profile';
+import HOMReport from '../pages/hom/Reports';
+
+
 const AppRoutes = () => {
   return (
     <BrowserRouter>
@@ -44,7 +53,7 @@ const AppRoutes = () => {
             <Route path="/tasks" element={<OfficerTasks />} />
             <Route path="/reports" element={<OfficerReports />} />
             <Route path="/performance" element={<OfficerPerformance />} />
-            <Route path="/profile" element={<OfficerSettings />} />
+            <Route path="/profile" element={<OfficerProfile />} />
             <Route path="/notification" element={<OfficerNotification />} />
           </Route>
 
@@ -62,8 +71,11 @@ const AppRoutes = () => {
 
           {/* HOM Routes */}
           <Route element={<RoleGuard allowedRoles={['HOM']} />}>
-            <Route path="/team-performance" element={<div className="p-6">Team Performance Page</div>} />
-            <Route path="/reports" element={<div className="p-6">HOM Reports Page</div>} />
+            <Route path="/mdaperformance" element={<HOMPerformance />} />
+            <Route path="/departments" element={<HOMDepartments />} />
+            <Route path="/homnotification" element={<HOMNotification />} />
+            <Route path="/homprofile" element={<HOMProfile />} />
+            <Route path="/homreports" element={<HOMReport />} />
           </Route>
 
           {/* HOS Routes */}

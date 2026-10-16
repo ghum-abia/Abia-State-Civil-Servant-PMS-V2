@@ -13,3 +13,37 @@
 html{
   scroll-behavior: smooth;
 }
+
+
+/* src/index.css or src/App.css */
+@media print {
+  /* Hide top navbar, sidebars, floating widgets, and navigation headers */
+  header, 
+  nav, 
+  aside, 
+  .print\:hidden {
+    display: none !important;
+  }
+
+  /* Reset layout containers so scrollbars disappear and content fits printed page */
+  html, body, #root, main, div {
+    overflow: visible !important;
+    height: auto !important;
+    max-height: none !important;
+    background: #ffffff !important;
+  }
+
+  /* Force printable document card to take full width without shadows or extra borders */
+  .printable-document {
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+  }
+
+  /* Hide custom browser scrollbars during print */
+  ::-webkit-scrollbar {
+    display: none !important;
+  }
+}
