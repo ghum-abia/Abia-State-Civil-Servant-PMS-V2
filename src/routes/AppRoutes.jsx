@@ -33,6 +33,9 @@ import HOMPerformance from '../pages/hom/Performance';
 import HOMProfile from '../pages/hom/Profile';
 import HOMReport from '../pages/hom/Reports';
 
+// HOS Pages
+
+
 
 const AppRoutes = () => {
   return (

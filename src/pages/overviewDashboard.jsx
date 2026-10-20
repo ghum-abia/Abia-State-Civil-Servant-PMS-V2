@@ -5,7 +5,7 @@ import { useAuthStore } from '../store/authStore';
 import OfficerDashboardView from '../pages/staff/Dashboard';
 import HodDashboardView from '../pages/hod/Dashboard';
 import HomDashboardView from '../pages/hom/Dashboard';
-// import HosDashboardView from './Hos/HosDashboard';
+import HosDashboardView from '../pages/hos/Dashboard';
 
 const OverviewDashboard = () => {
   const profile = useAuthStore((state) => state.profile);
@@ -33,11 +33,10 @@ const OverviewDashboard = () => {
 
   const profileRole = profile?.pms_role?.toLowerCase();
 
-  console.log('User Role:', profileRole);
 
   switch (profileRole) {
     case 'hos':
-      return <div className="p-6"><h1 className="text-2xl font-bold">Head of Service (HOS) Dashboard</h1></div>; // Replace with <HosDashboardView />
+      return <HosDashboardView />
     case 'hom':
       return <HomDashboardView />
     case 'hod':
