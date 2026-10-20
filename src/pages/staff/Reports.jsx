@@ -6,12 +6,8 @@ import PeriodFilter from '../../components/UI/PeriodFilter';
 import OfficerPerformanceTrend from '../../components/staff/OfficerPerformanceTrend';
 import Spinner from '../../components/UI/Spinner';
 import { 
-  FileText, 
   Printer, 
   Award, 
-  CheckCircle2, 
-  Clock, 
-  AlertCircle 
 } from 'lucide-react';
 
 export default function Reports() {
@@ -44,7 +40,7 @@ export default function Reports() {
     <div className="max-w-7xl mx-auto space-y-6 font-sans text-slate-800 pb-12">
       
       {/* Top Header & Actions (Hidden on Print) */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between print:hidden">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between/ print:hidden">
         <div>
           <p className="text-xs font-semibold text-slate-500">
             Review historical performance metrics and progress.
